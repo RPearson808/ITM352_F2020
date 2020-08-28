@@ -1,4 +1,0 @@
-Making a new test file on VSC.
-Looks pretty interesting.
-Adding on a new line to see if I can add commit comments.
-Can I do it now?
