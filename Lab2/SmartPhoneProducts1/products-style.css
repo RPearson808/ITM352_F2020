@@ -5,13 +5,21 @@ body {
 }
 /*Image Size*/
 img {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 140px;
 }
-/*Header1 Font Customizations*/
+/*Header Font Customizations -- text-shadow code courtesy of StackOverflow*/
 h1, h2 {
     text-align: center;
     color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; /* 1 pixel black shadow to left, top, right and bottom */
+}
+/*Body Text Customization*/
+body {
+    text-align: center;
+    font-size: 20pt;
+    color: whitesmoke;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 /*Background and Image Wrapping*/
 main {
@@ -26,3 +34,19 @@ div {
     border: 5px solid black;
     display: flex;
 }
+/*For making the home button look nice*/
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+a {
+    display: block;
+    padding: 15px;
+    width: 100px;
+    margin: auto;
+    background-color: rgb(37, 35, 35);
+    font-size: 18pt;
+    color: white;
+  }
