@@ -1,9 +1,28 @@
+/*Webpage margins*/
 body {
     width: 800px; 
     margin: 0 auto;
 }
-
+/*Image Size*/
 img {
     width: 200px;
     height: 200px;
+}
+/*Header1 Font Customizations*/
+h1, h2 {
+    text-align: center;
+    color: white;
+}
+/*Background and Image Wrapping*/
+main {
+    display: flex;
+    flex-flow: row wrap; 
+    justify-content: space-around;
+    background-image: url("images/phone_globe.jpg");
+    background-repeat: no-repeat;
+}
+/*Border and Display of div*/
+div {
+    border: 5px solid black;
+    display: flex;
 }
