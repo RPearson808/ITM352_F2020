@@ -52,7 +52,7 @@ a {
   }
 
 .rotate img {
-    animation: rotation .01s infinite linear;
+    animation: rotation .3s infinite linear;
 }
 
 @keyframes rotation {
@@ -62,4 +62,12 @@ a {
     to {
         transform: rotate(359deg);
     }
+}
+/*slider text*/
+p {
+    font-size: 14pt;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    color: yellow;
 }
