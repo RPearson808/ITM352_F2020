@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="bill">
+        <script>
+            var tax = 0.0413 * 500;
+            var taxtotal = tax.toFixed(2);
+            var name = " Russel Pearson"
+            var bill = "The tax on" + name + "'s bill is $" + taxtotal + ".";
+            document.getElementById("bill").innerHTML = bill
+        </script>
+    </div>
+</body>
+</html>

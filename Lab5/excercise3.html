@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="name">
+    <script>
+        var firstname = "Russel";
+        var midname = "KR";
+        var surname = "Pearson";
+        var fullname = firstname + " " + midname + " " + surname;
+        document.getElementById("name").innerHTML = fullname;
+    </script>
+</div>
+<br>
+<div id="fancyname">
+    <script>
+        var fancyname = fullname + "<br>" + firstname.slice(0,1) + "." + surname.slice(0,1) + ".";
+        document.getElementById("fancyname").innerHTML = fancyname;
+    </script>
+</div>
+<br>
+<div id="boldandbrash">
+    <script>
+        var boldandbrash = firstname.bold() + "<br>" + midname.italics() + "<br>" + surname.fontsize(40);
+        document.getElementById("boldandbrash").innerHTML = boldandbrash;
+    </script>
+</div>
+</body>
+</html>
