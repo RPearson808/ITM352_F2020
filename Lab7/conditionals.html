@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditionals</title>
+</head>
+<body>
+    <h1>Invoice</h1>
+    <script>
+        var state = 'WA';
+        switch (state) {
+            case 'HI':
+                var taxrate = 0.0417;
+                break;
+            case 'CA':
+                var taxrate = 0.06;
+                break;
+            case 'VT':
+                var taxrate = 1.0;
+                break;
+            default:
+                var taxrate = 0.02;
+                break;
+        }
+        //variables
+        var subtotal = 120;     //subtotal from previous page
+        var grandtotal = 0;
+        var taxexempt = false;      //tax exempt stauts
+        var taxowing = 0;
+        var discountrate = 0.1;     //discount rate for tax exempt
+        //document write
+        var subout = `Your subtotal is $ ${subtotal.toFixed(2)}.`;
+        document.write(subout + "<br>");
+        
+        if (taxexempt == true && subtotal >= 100) {
+            var discount = subtotal * discountrate;
+            document.write(`Congrats, you are eligible for a discount of $ ${discount}!<br>`);
+            subtotal -= discount;
+        }
+        
+        if (taxexempt == true) {
+            document.write("You are tax exempt.<br>");
+        }
+        else {
+            taxowing = subtotal * taxrate;
+            var taxout = taxowing.toFixed(2);
+            var tax = `Your tax owing is $ ${taxout}. <br>`;
+            document.write(tax);
+        }
+
+        var grandtotal = subtotal + taxowing;
+        var grandout = `Your grand total is $ ${grandtotal.toFixed(2)}.`;
+        document.write(grandout);
+    </script>
+</body>
+</html>

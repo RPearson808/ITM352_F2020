@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // -- Price depends on quantity
+        quantity = 0;
+        if (quantity < 10 && quantity > 0) {
+            price = 100;
+            }
+        else if (quantity >= 10 && quantity < 25) {
+            price = 50 ;
+            }
+        else if (quantity >= 25) {
+            price = 35;
+            }
+        else {
+            price = 0;
+        }
+        console.log(quantity + ' products will cost $' + price + ' each.');
+        document.write(quantity + ' products will cost $' + price + ' each.');
+    </script>
+</body>
+</html>
