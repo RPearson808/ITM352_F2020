@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WOD - Invoice1 by Russel Pearson</title>
+</head>
+<body>
+    <script>
+        /*This is a WOD that has me creating a dynamic sales receipt containing 5 different products using
+        expressions and variables to compute the values.*/
+        
+        //Product Data
+        //Product 1
+        var item1 = "Blue Apron";
+        var quantity1 = 60;
+        var price1 = 5.12;
+        //Product 2
+        var item2 = "Red Spatula";
+        var quantity2 = 7;
+        var price2 = 3.33;
+        //Product 3
+        var item3 = "Green Mixing Bowl";
+        var quantity3 = 19;
+        var price3 = 13.37;
+        //Product 4
+        var item4 = "Yellow Untensil Set";
+        var quantity4 = 3;
+        var price4 = 2.48;
+        //Product 5
+        var item5 = "Purple Chefs Hat";
+        var quantity5 = 60;
+        var price5 = 0.47;
+        
+        //Compute extended prices
+        var extended_item1 = quantity1 * price1;
+        var extended_item2 = quantity2 * price2;
+        var extended_item3 = quantity3 * price3;
+        var extended_item4 = quantity4 * price4;
+        var extended_item5 = quantity5 * price5;
+        
+        //Compute subtotal and total after tax
+        var subtotal = extended_item1 + extended_item2 + extended_item3 + extended_item4 + extended_item5;
+        var taxrate = 0.575;
+        var tax = subtotal * taxrate;
+        var grandtotal = subtotal + tax;
+
+        //Table of products
+        document.write(
+        `<table border="1">
+            <tr><th>Item</th><th>Quantity</th><th>Price</th><th>Extended Price</th></tr>
+            <tr><td>${item1}</td><td>${quantity1}</td><td>$${price1.toFixed(2)}</td><td>$${extended_item1.toFixed(2)}</td></tr>
+            <tr><td>${item2}</td><td>${quantity2}</td><td>$${price2.toFixed(2)}</td><td>$${extended_item2.toFixed(2)}</td></tr>
+            <tr><td>${item3}</td><td>${quantity3}</td><td>$${price3.toFixed(2)}</td><td>$${extended_item3.toFixed(2)}</td></tr>
+            <tr><td>${item4}</td><td>${quantity4}</td><td>$${price4.toFixed(2)}</td><td>$${extended_item4.toFixed(2)}</td></tr>
+            <tr><td>${item5}</td><td>${quantity5}</td><td>$${price5.toFixed(2)}</td><td>$${extended_item5.toFixed(2)}</td></tr>
+            <tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+            <tr><td>Subtotal</td><td>$${subtotal.toFixed(2)}</td></tr>
+            <tr><td>Tax @ 5.75%</td><td>$${tax.toFixed(2)}</td></tr>
+            <tr><td><b>Total</b></td><td>$${grandtotal.toFixed(2).bold()}</td></tr>
+        </table>`)
+    </script>
+</body>
+</html>
