@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WOD - Invoice2 by Russel Pearson</title>
+</head>
+<body>
+    <script>
+        /*This is a WOD where I will create a dynamic sales receipt for a sale that contains
+        5 different products using expressions and variables.*/
+        //Product Data
+        //Product 1
+        var item1 = "Blue Apron";
+        var quantity1 = 31;
+        var price1 = 15.78;
+        //Product 2
+        var item2 = "Red Utensil Set";
+        var quantity2 = 9;
+        var price2 = 23.09;
+        //Product 3
+        var item3 = "Orange Mixing Bowl";
+        var quantity3 = 4;
+        var price3 = 8.64;
+        //Product 4
+        var item4 = "Purple Chefs Hat";
+        var quantity4 = 30;
+        var price4 = 18.72;
+        //Product 5
+        var item5 = "Green Spatula";
+        var quantity5 = 15;
+        var price5 = 3.45;
+
+        //Compute extended prices
+        var extended_price1 = quantity1 * price1;
+        var extended_price2 = quantity2 * price2;
+        var extended_price3 = quantity3 * price3;
+        var extended_price4 = quantity4 * price4;
+        var extended_price5 = quantity5 * price5;
+
+        //Subtotal, tax, and grand total
+        var subtotal = extended_price1 + extended_price2 + extended_price3 + extended_price4 + extended_price5;
+        var taxrate = 0.575;
+        var tax = subtotal * taxrate;
+        //subtotal = 200; //debugging
+
+        //shipping cost compute
+        var shipping = 0;
+        if (subtotal < 50) {
+            shipping = 2;
+        } else if (subtotal >= 50 && subtotal < 100) {
+            shipping = 5;
+        } else if (subtotal >= 100) {
+            shipping = subtotal * 0.05;
+        } else {
+            shipping = "ERROR";
+        }
+
+        //grand total
+        var grandtotal = subtotal + tax + shipping;
+        
+        //Table of products
+        document.write(`<table border="2">
+        <tr><th>Item</th><th>Quantity</th><th>Price</th><th>Extended Price</th></tr>
+        <tr><td>${item1}</td><td>${quantity1}</td><td>$${price1.toFixed(2)}</td><td>$${extended_price1.toFixed(2)}</td></tr>
+        <tr><td>${item2}</td><td>${quantity2}</td><td>$${price2.toFixed(2)}</td><td>$${extended_price1.toFixed(2)}</td></tr>
+        <tr><td>${item3}</td><td>${quantity3}</td><td>$${price3.toFixed(2)}</td><td>$${extended_price3.toFixed(2)}</td></tr>
+        <tr><td>${item4}</td><td>${quantity4}</td><td>$${price4.toFixed(2)}</td><td>$${extended_price4.toFixed(2)}</td></tr>
+        <tr><td>${item5}</td><td>${quantity5}</td><td>$${price5.toFixed(2)}</td><td>$${extended_price5.toFixed(2)}</td></tr>
+        <tr></tr><tr></tr><tr></tr><tr></tr>
+        <tr><td>Subtotal</td><td>$${subtotal.toFixed(2)}</td></tr>
+        <tr><td>Tax @ 5.75%</td><td>$${tax.toFixed(2)}</td></tr>
+        <tr><td>Shipping</td><td>$${shipping.toFixed(2)}</td></tr>
+        <tr><td><b>Total</b></td><td><b>$${grandtotal.toFixed(2).bold()}</b></td></tr>
+        </table>`) 
+        document.write("<br><b>OUR SHIPPING POLICY IS: <br> A subtotal of $0 - $49.99 will be charged $2 shipping. <br> A subtotal of $50 - $99.99 will be charged $5 shipping. <br> Subtotals of $100 and over will be charged 5% of the subtotal amount for shipping.</b>")       
+    </script>
+</body>
+</html>
