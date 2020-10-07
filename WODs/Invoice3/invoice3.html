@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WOD - Invoice3 by Russel Pearson</title>
+</head>
+<body>
+    <script>
+        /*This is a WOD where I will create a dynamic sales receipt for a sale that contains
+        5 different products using expressions and variables.*/
+        //Product Data
+        //Product 1
+        var item1 = "Blue Apron";
+        var quantity1 = 30;
+        var price1 = 15.78;
+        //Product 2
+        var item2 = "Red Utensil Set";
+        var quantity2 = 9;
+        var price2 = 23.09;
+        //Product 3
+        var item3 = "Orange Mixing Bowl";
+        var quantity3 = 4;
+        var price3 = 8.64;
+        //Product 4
+        var item4 = "Purple Chefs Hat";
+        var quantity4 = 30;
+        var price4 = 18.72;
+        //Product 5
+        var item5 = "Green Spatula";
+        var quantity5 = 15;
+        var price5 = 3.45;
+
+        //Subtotal and extended_price init
+        var subtotal = 0;
+        var extended_price = 0;
+
+        //Table of products
+        document.write(`<table border="2">
+        <tr><th>Item</th><th>Quantity</th><th>Price</th><th>Extended Price</th></tr>`);
+        extended_price = price1 * quantity1;
+        subtotal = extended_price + subtotal;
+        document.write(`<tr><td>${item1}</td><td>${quantity1}</td><td>$${price1.toFixed(2)}</td><td>$${extended_price.toFixed(2)}</td></tr>`);
+        extended_price = price2 * quantity2;
+        subtotal = extended_price + subtotal;
+        document.write(`<tr><td>${item2}</td><td>${quantity2}</td><td>$${price2.toFixed(2)}</td><td>$${extended_price.toFixed(2)}</td></tr>`);
+        extended_price = price3 * quantity3;
+        subtotal = extended_price + subtotal;        
+        document.write(`<tr><td>${item3}</td><td>${quantity3}</td><td>$${price3.toFixed(2)}</td><td>$${extended_price.toFixed(2)}</td></tr>`);
+        extended_price = price4 * quantity4;
+        subtotal = extended_price + subtotal;   
+        document.write(`<tr><td>${item4}</td><td>${quantity4}</td><td>$${price4.toFixed(2)}</td><td>$${extended_price.toFixed(2)}</td></tr>`);
+        extended_price = price5 * quantity5;
+        subtotal = extended_price + subtotal;   
+        document.write(`<tr><td>${item5}</td><td>${quantity5}</td><td>$${price5.toFixed(2)}</td><td>$${extended_price.toFixed(2)}</td></tr>`);
+        document.write(`<tr></tr><tr></tr><tr></tr><tr></tr>`);
+        
+        //Tax and grand total
+        var taxrate = 0.575;
+        var tax = subtotal * taxrate;
+        var grandtotal = subtotal + tax;
+        document.write(`<tr><td>Subtotal</td><td>$${subtotal.toFixed(2)}</td></tr>
+        <tr><td>Tax @ 5.75%</td><td>$${tax.toFixed(2)}</td></tr>
+        <tr><td><b>Total</b></td><td><b>$${grandtotal.toFixed(2).bold()}</b></td></tr>
+        </table>`)        
+    </script>
+</body>
+</html>
