@@ -60,6 +60,8 @@ if (numyear%4 == 0 && numyear%100 == 0 && numyear%400 == 0){
     leapyear = "ERROR WITH LEAP YEAR IF";
 }
 
+console.log(`My birthday is ${monthvalue} ${day}, ${year}.`);
+
 if (leapyear == true) {
     console.log(`The year ${year} is a leap year.`);
 } else if (leapyear == false) {
