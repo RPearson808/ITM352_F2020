@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="products-style.css">
+    <style id="localstyle"></style>
+    <title>Smartphone Products</title>
+    <style>
+        body {
+            background: rgb(119, 79, 119);
+        }
+    </style>
+</head>
+<body>
+    <header><h1>Used Smartphone Store</h1></header>
+<p id="slider">Use the slider below to adjust the speed of spinning!</p>
+<input id='speedSlider' type='range' min=".1" max="10" step=".1" style="direction: rtl;" onchange="localstyle.innerHTML = '.rotate img {animation-duration: ' + speedSlider.value + 's;}';">
+<ul>
+    <li><a href="index.html">Home</a></li>
+</ul>
+    <div><main>
+        <script>
+            //product1
+            var brand1 = "HTC";
+            var price1 = 40;
+            var img1 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/HTC.jpg";
+            //product2
+            var brand2 = "Apple";
+            var price2 = 75;
+            var img2 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/iphone-3gs.jpg";
+            //product3
+            var brand3 = "Nokia";
+            var price3 = 35;
+            var img3 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/Nokia.jpg";
+            //product4
+            var brand4 = "Samsung";
+            var price4 = 45;
+            var img4 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/Samsung.jpg";
+            //product5
+            var brand5 = "Blackberry";
+            var price5 = 10;
+            var img5 = "http://dport96.github.io/ITM352/morea/080.flow-control-II/Blackberry.jpg";
+            //product6
+            var brand6 = "Motorola";
+            var price6 = 3.5;
+            var img6 = "images/motorola_phone.jpg";
+
+            //var init
+            var count = 1;
+            var num_item = 6;
+
+            for (count = 1; count <= num_item; count++){
+                document.write(`<section section class="item" onmouseover="className='item rotate'" onclick="className='item'">
+            <h2>${eval('brand' + count)}</h2>
+            <p>&dollar; ${eval('price' + count).toFixed(2)}</p>
+            <img src=${eval('img' + count)}>
+        </section>`);
+            }
+        </script>
+    </main></div>
+    <footer><h1>Your One Stop Phone Shop</h1></footer>
+</body>
+</html>
