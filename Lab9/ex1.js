@@ -5,6 +5,7 @@ var month = "ERROR";
 var day = 1;
 var leapyear = "ERROR";
 var weekday = "ERROR";
+var lastmonth = "ERROR";
 
 switch (monthvalue) {
     case 'January':
@@ -12,39 +13,51 @@ switch (monthvalue) {
     break;
     case 'February':
     month = 3;
+    lastmonth = 3;
     break;
     case 'March':
     month = 6;
+    lastmonth = 3;
     break;
     case 'April':
     month = 1;
+    lastmonth = 6
     break;
     case 'May':
     month = 4;
+    lastmonth = 1;
     break
     case 'June':
     month = 6;
+    lastmonth = 4;
     break;
     case 'July':
     month = 2;
+    lastmonth = 6;
     break;
     case 'August':
     month = 5;
+    lastmonth = 2;
     break;
     case 'September':
     month = 0;
+    lastmonth = 5;
     break;
     case 'October':
     month = 3;
+    lastmonth = 0;
     break;
     case 'November':
     month = 5;
+    lastmonth = 3;
     break;
     case 'December':
     month = 1;
+    lastmonth = 5;
     break;
     default:
-    month = 'ERROR WITH MONTH SWITCH'
+    month = 'ERROR WITH MONTH SWITCH';
+    lastmonth = "ERROR WITH MONTH SWITCH";
     break;
 }
 
@@ -81,8 +94,8 @@ if (monthvalue == "January") {
     console.log(`5) ${step3} + ${day} = ${step5}`);
     var step8 = step5;
 } else {
-    var step4 = month;
-    console.log(`4) Since my birthday is in ${monthvalue}, looking at the table the number associated with it is ${month}.`);
+    var step4 = lastmonth;
+    console.log(`4) Since my birthday is in ${monthvalue}, we need to add the value of the previous month from the table which is ${lastmonth}.`);
     var step6 = step4 + step3;
     console.log(`6) ${step4} + ${step3} = ${step6}`);
     var step7 = step6 + day;
@@ -139,7 +152,7 @@ switch (step9) {
         weekday = "Friday";
     break;
     case 6:
-        weekday = "Sunday";
+        weekday = "Saturday";
     break;
     default:
         weekday = "ERROR WITH WEEKDAY SWITCH";
