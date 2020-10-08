@@ -158,4 +158,4 @@ switch (step9) {
         weekday = "ERROR WITH WEEKDAY SWITCH";
     break;
 }
-console.log(`Since we got ${step9} as our remainder, I was born on ${weekday}.`);
+console.log(`Referencing the provided table, a value of ${step9} shows I was born on ${weekday}.`);
