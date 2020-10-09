@@ -3,10 +3,10 @@ while (true) {
         await sleep(150);
         controller.rotate();
         controller.move();
-    } else if (Math.floor(Math.random() * 10) <= 5){
+    } else if (Math.floor(Math.random() * 11) <= 5){
         await sleep(150);
         controller.rotate();
-    } else if (Math.floor(Math.random() * 10) >= 6){
+    } else if (Math.floor(Math.random() * 11) >= 6){
         await sleep(150);
         controller.move(); 
     } else {
