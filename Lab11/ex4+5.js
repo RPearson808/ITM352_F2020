@@ -1,3 +1,4 @@
+//exercise 4
 var val = ["2", "-3", "asdf", "-3.14156", "5"];
 
 function isNonNegInt (stringToCheck, returnErrors = false) {
@@ -9,6 +10,18 @@ function isNonNegInt (stringToCheck, returnErrors = false) {
     return returnErrors ? errors : (errors.length == 0);
 }
 
+console.log("------Exercise 4-----");
 for (i=0; i < val.length; i++) {
     console.log("String \'" + val[i] + "\' is " + isNonNegInt(val[i],true).join("||"));
+}
+
+//exercise 5
+console.log("------Exercise 5-----");
+values.forEach (item, index) {
+    errorsReturned = isNonNegInt(item, true).join("||");
+    if (errorsReturned.length == 0) {
+        console.log("String \'" + item + "\' is valid.");
+    } else {
+        console.log("String \`" + item + "\' is " + errorsReturned);
+    }
 }
