@@ -1,6 +1,6 @@
 attributes  =  "Russel;25;MIS";
 
-var Russel = attributes.split(";");
+var Russel = attributes.split(1, ";");
 
 rus_string = Russel.join(",");
 
@@ -9,5 +9,5 @@ for (attrib of Russel) { //attrib in looks for # of elements, attrib of returns 
     console.log(attrib);
 }
 */
-
+console.log(Russel);
 console.log(rus_string);

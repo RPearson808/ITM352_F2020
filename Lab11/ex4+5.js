@@ -22,6 +22,13 @@ values.forEach (item, index) {
     if (errorsReturned.length == 0) {
         console.log("String \'" + item + "\' is valid.");
     } else {
-        console.log("String \`" + item + "\' is " + errorsReturned);
+        console.log((typeof item == 'string' && item.length > 0)?true:false);
     }
 }
+
+function callback(item, index) {
+    errorsReturned = isNonNegInt(item, true).join("||");
+    console.log("String \'" + val[i] + "\' is " + isNonNegInt(val[i],true).join("||"));
+}
+
+val.forEach(callback);
