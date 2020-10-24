@@ -1,6 +1,6 @@
 attributes  =  "Russel;25;MIS";
 
-var Russel = attributes.split(1, ";");
+var Russel = attributes.split(";");
 
 rus_string = Russel.join(",");
 
