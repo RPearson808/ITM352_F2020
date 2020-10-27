@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WOD - Invoice4 by Russel Pearson</title>
+</head>
+
+<body>
+    <script>
+        var products = [
+            //product1
+            product1 = {
+                "brand": "HTC",
+                "price": 40,
+                "image": "http://dport96.github.io/ITM352/morea/080.flow-control-II/HTC.jpg"
+            },
+            //product2
+            product2 = {
+                "brand": "Apple",
+                "price": 75,
+                "image": "http://dport96.github.io/ITM352/morea/080.flow-control-II/iphone-3gs.jpg"
+            },
+            //product3
+            product3 = {
+                "brand": "Nokia",
+                "price": 35,
+                "image": "http://dport96.github.io/ITM352/morea/080.flow-control-II/Nokia.jpg"
+            },
+            //product4
+            product4 = {
+                "brand": "Samsung",
+                "price": 45,
+                "image": "http://dport96.github.io/ITM352/morea/080.flow-control-II/Samsung.jpg"
+            },
+            //product5
+            product5 = {
+                "brand": "Blackberry",
+                "price": 10,
+                "image": "http://dport96.github.io/ITM352/morea/080.flow-control-II/Blackberry.jpg"
+            },
+            //product6
+            product6 = {
+                "brand": "Motorola",
+                "price": 3.5,
+                "image": "images/motorola_phone.jpg"
+            },
+        ];
+
+        var quantities = [Math.floor(Math.random()*-100), Math.floor(Math.random()*2), "gorillaz", Math.floor(Math.random()*100), Math.floor(Math.random()*-1000), Math.floor(Math.random()*100)];
+
+        function isNonNegInt(stringToCheck, returnErrors = false) {
+            errors = []; // assume no errors at first
+            if (Number(stringToCheck) != stringToCheck) errors.push('Not a number!'); // Check if string is a number value
+            if (stringToCheck < 0) errors.push('Negative value!'); // Check if it is non-negative
+            if (parseInt(stringToCheck) != stringToCheck) errors.push('Not an integer!'); // Check that it is an integer
+
+            return returnErrors ? errors : (errors.length == 0);
+        }
+
+        function generate_item_rows(product_quantities_array) {
+            for (i = 0; i < product_quantities_array.length; i++) {
+                var errors = isNonNegInt(product_quantities_array[i], true);
+                if (errors.length == 0) {
+                    extended_price = product_quantities_array[i] * products[i].price;
+                    subtotal += extended_price;
+                } else {
+                    product_quantities_array[i] = `<span style="color:red;">${product_quantities_array[i]}<br>${errors.join("<br")}`;
+                    extended_price = 0;
+                    subtotal += extended_price;
+                }
+                if (product_quantities_array[i] == 0) {
+                    continue;
+                }
+                document.write(`<tr>
+                    <td>${products[i].brand}</td>
+                    <td>${product_quantities_array[i]}</td>
+                    <td>$${products[i].price.toFixed(2)}</td>
+                    <td>$${extended_price.toFixed(2)}</td>
+                    </tr>`);
+            }
+        }
+        /*This is a WOD where I will create a dynamic sales receipt for a sale that contains
+        5 different products using expressions and variables.*/
+        //Product Data
+        //Product 1
+        var item1 = "Blue Apron";
+        var quantity1 = 30;
+        var price1 = 15.78;
+        //Product 2
+        var item2 = "Red Utensil Set";
+        var quantity2 = 9;
+        var price2 = 23.09;
+        //Product 3
+        var item3 = "Orange Mixing Bowl";
+        var quantity3 = 4;
+        var price3 = 8.64;
+        //Product 4
+        var item4 = "Purple Chefs Hat";
+        var quantity4 = 30;
+        var price4 = 18.72;
+        //Product 5
+        var item5 = "Green Spatula";
+        var quantity5 = 15;
+        var price5 = 3.45;
+
+        //Subtotal and extended_price init
+        var subtotal = 0;
+        var extended_price = 0;
+
+        //Table of products
+        document.write(`<table border="2">
+        <tr><th>Item</th><th>Quantity</th><th>Price</th><th>Extended Price</th></tr>`);
+        generate_item_rows(quantities);
+        document.write(`<tr></tr><tr></tr><tr></tr><tr></tr>`);
+
+        //Tax and grand total
+        var taxrate = 0.575;
+        var tax = subtotal * taxrate;
+        var grandtotal = subtotal + tax;
+        document.write(`<tr><td>Subtotal</td><td>$${subtotal.toFixed(2)}</td></tr>
+        <tr><td>Tax @ 5.75%</td><td>$${tax.toFixed(2)}</td></tr>
+        <tr><td><b>Total</b></td><td><b>$${grandtotal.toFixed(2).bold()}</b></td></tr>
+        </table>`)        
+    </script>
+</body>
+
+</html>
