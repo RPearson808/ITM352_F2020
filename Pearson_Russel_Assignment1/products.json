@@ -2,11 +2,14 @@
     {
         "artist": "Gorillaz",
         "genre": "Alternative Rock",
-        "albums": ["Song Machine, Season One: Strange Timez", "The Now Now"]
-        "price": 19.99,
+        "albums": ["Song Machine, Season One: Strange Timez", "The Now Now", "Demon Days", "Plastic Beach"],
+        "price": [19.99, 14.99, 9.99, 9.99]
     },
 
     {
-
-    }
+        "artist": "Queen",
+        "genre": "Rock",
+        "albums": ["Queen", "Queen II", "Jazz"],
+        "price": [9.99, 9.99, 9.99]
+    },
 ]
