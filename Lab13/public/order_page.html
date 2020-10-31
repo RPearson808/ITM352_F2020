@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lab 12 Exercise 4</title>
+    <script src="./product_data.js"></script>
 </head>
 
 <body>
@@ -39,8 +40,9 @@
                 window.stop()
             }
         }
+        document.write(`<h3>${products[0]["model"]} at \$${products[0]["price"]}</h3>`);
     </script>
-    <H1>Lab 13 Order Page w/ Order-Side Processing</H1>
+    <H1>Lab 13 Order Page w/ Server-Side Processing</H1>
     <form name="quantity_form" action="localhost:8080/process_form" method="POST"> 
         <label for="quantity_textbox">Quantity desired: </label>
         <input type="text" name="quantity_textbox" onkeyup="checkQuantityTextbox();">
