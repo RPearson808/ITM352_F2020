@@ -1,15 +1,55 @@
-[
+[    
     {
-        "artist": "Gorillaz",
-        "genre": "Alternative Rock",
-        "albums": ["Song Machine, Season One: Strange Timez", "The Now Now", "Demon Days", "Plastic Beach"],
-        "price": [19.99, 14.99, 9.99, 9.99]
+        "name": "Black Lotus",
+        "price": 89999.99,
+        "img": "images/a_black_lotus.jpg",
+    },
+    
+    {
+        "name": "Mox Pearl",
+        "price": 7999.99,
+        "img":"images/a_mox_pearl.jpg",
+    },
+       
+    {
+        "name": "Mox Sapphire",
+        "price": 14999.99,
+        "img":"images/a_mox_sapphire.jpg",
     },
 
     {
-        "artist": "Queen",
-        "genre": "Rock",
-        "albums": ["Queen", "Queen II", "Jazz"],
-        "price": [9.99, 9.99, 9.99]
+        "name": "Mox Jet",
+        "price": 8799.99,
+        "img":"images/a_mox_jet.jpg",
+    },
+
+    {
+        "name": "Mox Ruby",
+        "price": 9999.99,
+        "img":"images/a_mox_ruby.jpg",
+    },
+ 
+    {
+        "name": "Mox Emerald",
+        "price": 6599.99,
+        "img":"images/a_mox_emerald.jpg",
+    },
+
+    {
+        "name": "Ancestral Recall",
+        "price": 9599.99,
+        "img":"images/a_ancestral_recall.jpg",
+    },
+
+    {
+        "name": "Timetwister",
+        "price": 10000.99,
+        "img":"images/a_timetwister.jpg",
+    },
+    
+    {
+        "name": "Time Walk",
+        "price": 8399.99,
+        "img":"images/a_time_walk.jpg",
     },
 ]
