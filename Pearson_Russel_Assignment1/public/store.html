@@ -7,7 +7,7 @@
         if (Number(stringToCheck) != stringToCheck) errors.push('Please enter a valid number.');
     // Then check if it is non-negative
         if (stringToCheck < 0) errors.push('Please enter a non-negative amount.');
-    // Finally check that it is an integer and a number value
+    // Finally check that it is an integer
         if (parseInt(stringToCheck) != stringToCheck) errors.push('Please enter an amount without any decimals.');
 
     return returnErrors ? errors : (errors.length == 0);
@@ -35,7 +35,7 @@
         <h1>Russel's <i>Magic: The Gathering</i> Rare Cards Store</h1>
     </header>
     <div>
-    <form name='quantity_form' action="http://localhost:8080/process_form" method="POST">
+    <form name='quantity_form' action="http://itm-vm.shidler.hawaii.edu:8080/process_form" method="POST">
         <script>
             for (i in products_array) {
                 document.write(`<h3>${products_array[i]["name"]} at \$${products_array[i]["price"]}</h3>`);

@@ -10,7 +10,6 @@ var tax = 0;
 var express = require('express');
 var expressApp = express();
 var bodyParser = require("body-parser");
-var fs = require('fs');
 
 // telling express what folder to serve
 expressApp.use(express.static('./public'));
