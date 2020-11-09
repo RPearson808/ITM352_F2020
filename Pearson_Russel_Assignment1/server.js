@@ -10,7 +10,6 @@ for (i=0; i < product_data.length; i++) {
 var express = require('express');
 var expressApp = express();
 var bodyParser = require("body-parser");
-var fs = require('fs');
 
 // telling express what folder to serve
 expressApp.use(express.static('./public'));
