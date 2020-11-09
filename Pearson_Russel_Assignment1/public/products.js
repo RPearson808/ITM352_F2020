@@ -1,64 +1,56 @@
+// fun fact: all of these prices are only 10% of their actual value according to CardKingdom
 var products_array = [    
     {
         name: "Black Lotus",
-        price: 89999.99,
-        quantity: 1,
+        price: 8999.99,
         img: "../images/a_black_lotus.jpg"
     },
     
     {
         name: "Mox Pearl",
-        price: 7999.99,
-        quantity: 5,
+        price: 799.99,
         img:"../images/a_mox_pearl.jpg"
     },
        
     {
         name: "Mox Sapphire",
-        price: 14999.99,
-        quantity: 2,
+        price: 1499.99,
         img:"../images/a_mox_sapphire.jpg"
     },
 
     {
         name: "Mox Jet",
-        price: 8799.99,
-        quantity: 4,
+        price: 879.99,
         img:"../images/a_mox_jet.jpg"
     },
 
     {
         name: "Mox Ruby",
-        price: 9999.99,
-        quantity: 3,
+        price: 999.99,
         img:"../images/a_mox_ruby.jpg"
     },
  
     {
         name: "Mox Emerald",
-        price: 6599.99,
-        quantity: 20,
+        price: 659.99,
         img:"../images/a_mox_emerald.jpg"
     },
 
     {
         name: "Ancestral Recall",
-        price: 9599.99,
-        quantity: 3,
+        price: 959.99,
         img:"../images/a_ancestral_recall.jpg"
     },
 
     {
         name: "Timetwister",
-        price: 10000.99,
-        quantity: 2,
+        price: 1000.99,
         img:"../images/a_timetwister.jpg"
     },
     
     {
         name: "Time Walk",
-        price: 8399.99,
-        quantity: 4,
+        price: 839.99,
         img:"../images/a_time_walk.jpg"
     }
 ];

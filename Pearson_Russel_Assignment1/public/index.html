@@ -1,30 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="products.js"></script>
+    <title>Russel's Power Nine Store</title>
+    <link rel="stylesheet" href="index-style.css">
 </head>
-
 <body>
-    <form>
-        <script>
-            for (i=0; i < products_array.length; i++) {
-                document.write(`
-                                <section class="item">
-                                    <h2>${products_array[i]["name"]}</h2>
-                                    <p>$${products_array[i]["price"]}</p>
-                                    <label id="quantity${i}_label"}">Quantity</label>
-                                    <input type="text" placeholder="0" name="quantity${i}" 
-                                    onkeyup="checkQuantityTextbox(this);">
-                                    <img src="${products_array[i]["img"]}">
-                                </section>
-                            `);
-            }    
-        </script>
-    </form>
+    <header>
+        <h1>Welcome to Russel's Store, where we sell rare trading cards for cheap!</h1>
+    </header>
+    <a href="store.html">
+        <img src="./images/web_portal.gif">
+    </a>
+    <footer>
+        <h2>Click on the portal above to enter</h2>
+    </footer>
 </body>
-
 </html>
