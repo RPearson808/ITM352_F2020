@@ -65,6 +65,7 @@ app.get("/register", function (request, response) {
     // process a simple register form
     POST = request.body;
     if (POST['username'] != undefined && POST['password'] != undefined) {
+        if (POST['username'] != user_data[username] && POST['password'] == POST['repeat_password']) {
         username = POST['username'];
         user_data[username] = {};
         user_data[username].name = POST['username'];
@@ -75,6 +76,9 @@ app.get("/register", function (request, response) {
         fs.writeFileSync(filename, data, 'utf-8');
 
         response.send(`User ${username} logged in.`);
+        }
+    } else {
+        response.send(`Please go back to the register page.`);
     }
  });
 
