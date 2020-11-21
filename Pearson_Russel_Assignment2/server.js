@@ -10,10 +10,11 @@ var tax = 0;
 var express = require('express');
 var expressApp = express();
 var bodyParser = require("body-parser");
+var fs = require('fs');
+// init for user data
+var userDatabase = "user_data.json";
 
-// telling express what folder to serve
-expressApp.use(express.static('./public'));
-expressApp.use( bodyParser.urlencoded({ extended: true }) );
+// just some internal re-structuring, functions will be loaded here
 
 // bringing over isNonNegInt from Lab12 w/ some changes
 function isNonNegInt(stringToCheck, returnErrors = false) {
@@ -26,6 +27,22 @@ function isNonNegInt(stringToCheck, returnErrors = false) {
     if (parseInt(stringToCheck) != stringToCheck) errors.push('Please enter an amount without any decimals.');
 
     return returnErrors ? errors : (errors.length == 0);
+}
+
+// telling express what folder to serve & body parser for url
+expressApp.use(express.static('./public'));
+expressApp.use( bodyParser.urlencoded({ extended: true }) );
+
+
+// for allowing server to read + write to user_data.json
+if (fs.existsSync(userDatabase)) {
+    raw_data = fs.readFileSync(userDatabase, 'utf-8');
+    user_data = JSON.parse(raw_data);
+
+    console.log(user_data);
+} else {
+    console.log("ERROR: Unable to read file " + userDatabase);
+    exit();
 }
 
 // process_quantity_form function from Lab13 modified to handle the invoice creation
