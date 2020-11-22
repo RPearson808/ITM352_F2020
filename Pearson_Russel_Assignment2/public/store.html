@@ -35,7 +35,7 @@
         <h1>Russel's <i>Magic: The Gathering</i> Rare Cards Store</h1>
     </header>
     <div>
-    <form name='quantity_form' action="http://itm-vm.shidler.hawaii.edu:8080/process_form" method="POST">
+    <form name='quantity_form' action="/process_form" method="POST">
         <script>
             for (i in products_array) {
                 document.write(`<h3>${products_array[i]["name"]} at \$${products_array[i]["price"]}</h3>`);

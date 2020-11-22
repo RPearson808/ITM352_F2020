@@ -1,11 +1,12 @@
 // product initialization
 var product_data = require('./public/products.js');
-var products= product_data.products_array;
+var products = product_data.products_array;
 //variable initialization for functions
 var subtotal = 0;
 var taxRate = 0.035;
 var visibleTaxRate = taxRate * 100;
 var tax = 0;
+var invoice = '';
 // webpage modules
 var express = require('express');
 var expressApp = express();
@@ -29,27 +30,10 @@ function isNonNegInt(stringToCheck, returnErrors = false) {
     return returnErrors ? errors : (errors.length == 0);
 }
 
-// telling express what folder to serve & body parser for url
-expressApp.use(express.static('./public'));
-expressApp.use( bodyParser.urlencoded({ extended: true }) );
-
-
-// for allowing server to read + write to user_data.json
-if (fs.existsSync(userDatabase)) {
-    raw_data = fs.readFileSync(userDatabase, 'utf-8');
-    user_data = JSON.parse(raw_data);
-
-    console.log(user_data);
-} else {
-    console.log("ERROR: Unable to read file " + userDatabase);
-    exit();
-}
-
 // process_quantity_form function from Lab13 modified to handle the invoice creation
 function server_side_invoice(POST, response) {
     if (typeof POST['purchase_submit_button'] != 'undefined') {
-        //var contents = fs.readFileSync('./public/invoice.view', 'utf-8');
-        invoice = "<table border=2><tr><th>Item</th><th>Quantity</th><th>Price</th><th>Extended Price</th></tr>"
+        invoice = "<table border=2><tr><th>Item</th><th>Quantity</th><th>Price</th><th>Extended Price</th></tr>";
         let subtotal = 0; // so subtotal resets to 0 each time you go back or refresh the page
         let shipRate = 0.07; // default ship rate, will be used later to determine a variable shipping rate
         for (i in products) {
@@ -95,10 +79,21 @@ function server_side_invoice(POST, response) {
                     <br>* Shipping rates for orders between $1000 and $1999 will charged 5% of their subtotal as shipping. 
                     <br>* Shipping rates for orders between $2000 $2999 will charged 3% of their subtotal as shipping. 
                     <br>* Shipping rates for orders over $3000 will <b>NOT</b> charged any shipping -- it's on us!`;
-        // server will now send the invoice to user
-        response.send(invoice);
-        response.end();
     }
+} // removed response.send at end of function so only users that are logged on can purchase
+
+// telling express what folder to serve & body parser for url
+expressApp.use(express.static('./public'));
+expressApp.use(bodyParser.urlencoded({ extended: true }));
+
+// for allowing server to read + write to user_data.json
+if (fs.existsSync(userDatabase)) {
+    raw_data = fs.readFileSync(userDatabase, 'utf-8');
+    user_data = JSON.parse(raw_data);
+    //console.log(user_data); // this is just to see if it reads user_data correctly
+} else {
+    console.log("ERROR: Unable to read file " + userDatabase);
+    exit();
 }
 
 expressApp.all('*', function (request, response, next) {
@@ -107,9 +102,38 @@ expressApp.all('*', function (request, response, next) {
 });
 
 expressApp.post("/process_form", function (request, response) {
-    console.log("POST was sucessful");
+    console.log("POST was sucessful for invoice");
     let POST = request.body;
     server_side_invoice(POST, response);
+    response.redirect("login");
 });
+// with new response.redirect for process_form, users will now need to successfully log in first before being shown the invoice
+expressApp.get("/login", function (request, response) {
+    // Give a simple login form
+    str = `
+<body>
+<form action="/login" method="POST">
+<input type="text" name="username" size="40" placeholder="enter username"><br/>
+<input type="password" name="password" size="40" placeholder="enter password"><br/>
+<input type="submit" value="Submit" id="submit">
+</form>
+</body>
+    `;
+    response.send(str);
+});
+
+expressApp.post("/login", function (request, response) {
+    // Process login form POST and redirect to logged in page if ok, back to login page if not
+    console.log("Got a POST login request");
+    POST = request.body; // this will request from both username and password fields
+    user_name_from_form = POST['username'];
+    if (user_data.user_name_from_form != undefined) {
+        response.send(invoice);
+    } else {
+        response.send(`<h3>Please re-enter login information.</h3>`);
+        
+    }
+});
+
 
 expressApp.listen(8080, () => console.log(`listening on port 8080`));
