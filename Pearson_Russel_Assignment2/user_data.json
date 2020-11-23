@@ -1,7 +1,1 @@
-{
-    "itm352": {
-        "username": "itm352",
-        "password": "grader",
-        "email": "kazman@hawaii.edu"
-    }
-}
+{"itm352":{"username":"itm352","password":"grader","name":"Rick Kazman","email":"kazman@hawaii.edu"},"russel_test":{"username":"russel_test","password":"a","name":"Russel Pearson","email":"pearsonr@hawaii.edu"},"test2":{"username":"test2","password":"a","name":"fe","email":"te@st.com"}}
