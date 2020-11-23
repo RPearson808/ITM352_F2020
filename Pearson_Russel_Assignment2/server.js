@@ -113,7 +113,7 @@ expressApp.get("/register", function (request, response) {
     POST = request.body;
     username_from_form = POST['username'].toLowerCase(); // work-around for making usernames case insensitive by making all usernames lowercase
     if (POST['username'] != undefined && POST['password'] != undefined) {
-        if (username_from_form != user_data[username_from_form].username && POST['password'] == POST['repeat_password']) { // this checks for if the username is already in use and if the passwords match up
+        if (username_from_form != user_data[username_from_form] && POST['password'] == POST['repeat_password']) { // this checks for if the username is already in use and if the passwords match up
         username = username_from_form;
         user_data[username] = {};
         user_data[username].username = username_from_form;
@@ -125,7 +125,7 @@ expressApp.get("/register", function (request, response) {
         fs.writeFileSync(userDatabase, data, 'utf-8');
         
         response.send(invoice);
-        } else if (username_from_form == user_data[username_from_form].username) { // due to how I am doing this without using query strings (why have I done this to myself), users HAVE to be taken back home unless they want an empty invoice
+        } else if (username_from_form == user_data[username_from_form].username) { // due to how I am doing this, users HAVE to be taken back home unless they want an empty invoice
             response.send(`Looks like you're already registered with us!  Please click the button and re-enter your order from the store page.<br><button onclick="location.href='/store.html'">Return Home</button>`);
         }
     } else {
@@ -183,6 +183,8 @@ function server_side_invoice(POST, response) {
                     <br>* Shipping rates for orders between $1000 and $1999 will charged 5% of their subtotal as shipping. 
                     <br>* Shipping rates for orders between $2000 $2999 will charged 3% of their subtotal as shipping. 
                     <br>* Shipping rates for orders over $3000 will <b>NOT</b> charged any shipping -- it's on us!`;
+        // added in small personalization note on invoice
+        invoice += `<br><br><h2>Thank you for shopping with us ${user_data[username_from_form].name}, if you have any questions about your order please call 1 555 246 8102.</h2>`;
     }
 } // removed response.send at end of function so only users that are logged on can purchase 
 
