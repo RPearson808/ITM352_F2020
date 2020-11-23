@@ -110,7 +110,6 @@ expressApp.get("/register", function (request, response) {
  });
 
  expressApp.post("/register", function (request, response) {
-    // process a simple register form
     POST = request.body;
     username_from_form = POST['username'].toLowerCase(); // work-around for making usernames case insensitive by making all usernames lowercase
     if (POST['username'] != undefined && POST['password'] != undefined) {
