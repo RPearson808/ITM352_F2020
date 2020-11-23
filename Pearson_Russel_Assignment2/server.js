@@ -12,10 +12,10 @@ var express = require('express');
 var expressApp = express();
 var bodyParser = require("body-parser");
 var fs = require('fs');
-const { response } = require('express');
 // init for user data
 var userDatabase = 'user_data.json';
 var username_from_form = '';
+var currentUser = '';
 
 // bringing over isNonNegInt from Lab12 w/ some changes
 function isNonNegInt(stringToCheck, returnErrors = false) {
@@ -28,6 +28,12 @@ function isNonNegInt(stringToCheck, returnErrors = false) {
     if (parseInt(stringToCheck) != stringToCheck) errors.push('Please enter an amount without any decimals.');
 
     return returnErrors ? errors : (errors.length == 0);
+}
+
+function findCurrentUser(username) {
+    username = username_from_form;
+    currentUser = user_data[username].name;
+    return currentUser;
 }
 // below is the server for the webpage and for handling login/registration
 
@@ -49,12 +55,6 @@ expressApp.all('*', function (request, response, next) {
     next();
 });
 
-expressApp.post("/process_form", function (request, response) {
-    console.log("POST was sucessful for invoice");
-    let POST = request.body;
-    server_side_invoice(POST, response);
-    response.redirect("login"); // purchase will now redirect to login page
-});
 // with new response.redirect for process_form, users will now need to successfully log in first before being shown the invoice
 expressApp.get("/login", function (request, response) {
     str = `
@@ -84,12 +84,19 @@ expressApp.post("/login", function (request, response) {
     } else if (username_from_form == user_data[username_from_form].username && password_from_form != user_data[username_from_form].password) { // incorrect password
         response.send('The password was incorrect, please go back and re-enter your password.');
     } else if (username_from_form == user_data[username_from_form].username && password_from_form == user_data[username_from_form].password) { // success
+        currentUser = findCurrentUser(username_from_form);
         response.send(invoice);
     } else {
         response.send('An error has ocurred, please go back to the previously working page.');
     }
 });
 
+expressApp.post("/process_form", function (request, response) {
+    console.log("POST was sucessful for invoice");
+    let POST = request.body;
+    server_side_invoice(POST, response);
+    response.redirect("login"); // purchase will now redirect to login page
+});
 // this is the register form for new users taken from Lab14, added in parameters for username, password, email, and name
 // pattern for email was from W3schools
 expressApp.get("/register", function (request, response) {
@@ -135,7 +142,7 @@ expressApp.get("/register", function (request, response) {
  
 // process_quantity_form function from Lab13 modified to handle the invoice creation
 function server_side_invoice(POST, response) {
-    if (typeof POST['purchase_submit_button'] != 'undefined') {
+        if (typeof POST['purchase_submit_button'] != 'undefined') {
         // start of invoice generation
         invoice = "<table border=2><tr><th>Item</th><th>Quantity</th><th>Price</th><th>Extended Price</th></tr>";
         let subtotal = 0; // so subtotal resets to 0 each time you go back or refresh the page
@@ -184,7 +191,7 @@ function server_side_invoice(POST, response) {
                     <br>* Shipping rates for orders between $2000 $2999 will charged 3% of their subtotal as shipping. 
                     <br>* Shipping rates for orders over $3000 will <b>NOT</b> charged any shipping -- it's on us!`;
         // added in small personalization note on invoice
-        invoice += `<br><br><h2>Thank you for shopping with us ${user_data[username_from_form].name}, if you have any questions about your order please call 1 555 246 8102.</h2>`;
+        invoice += `<br><br><h2>Thank you for shopping with us ${currentUser}!  If you have any questions about your order please call 1 555 246 8102.</h2>`;
     }
 } // removed response.send at end of function so only users that are logged on can purchase 
 
