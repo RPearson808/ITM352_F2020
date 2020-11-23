@@ -39,7 +39,6 @@ expressApp.use(bodyParser.urlencoded({ extended: true }));
 if (fs.existsSync(userDatabase)) {
     var raw_data = fs.readFileSync(userDatabase, 'utf-8');
     var user_data = JSON.parse(raw_data);
-    //console.log(user_data); // this is just to see if it reads user_data correctly
 } else {
     console.log("ERROR: Unable to read file " + userDatabase);
     exit();
@@ -58,7 +57,6 @@ expressApp.post("/process_form", function (request, response) {
 });
 // with new response.redirect for process_form, users will now need to successfully log in first before being shown the invoice
 expressApp.get("/login", function (request, response) {
-    // Give a simple login form
     str = `
 <body>
 <h3>Please log into your account to finish processing your order.</h3>
@@ -76,34 +74,34 @@ expressApp.post("/login", function (request, response) {
     // Process login form POST and redirect to logged in page if ok, back to login page if not
     console.log("Got a POST login request");
     POST = request.body; // this will request from both username and password fields
-    username_from_form = POST['username'].toLowerCase();
+    username_from_form = POST['username'].toLowerCase(); // this is how I force usernames to be case insensitive, check out the registration code down below to see why
     password_from_form = POST['password'];
-    if (typeof user_data[username_from_form] == 'undefined') {
+    if (typeof user_data[username_from_form] == 'undefined') { // wanted a way for users without a login to be able to register
         response.send   (`
                             It looks like we couldn't find an account with that name, please click the button below to register and create an account.<br>
                             <button onclick="location.href='/register'">Register</button>
                         `);
-    } else if (username_from_form == user_data[username_from_form].username && password_from_form != user_data[username_from_form].password) {
+    } else if (username_from_form == user_data[username_from_form].username && password_from_form != user_data[username_from_form].password) { // incorrect password
         response.send('The password was incorrect, please go back and re-enter your password.');
-    } else if (username_from_form == user_data[username_from_form].username && password_from_form == user_data[username_from_form].password) {
+    } else if (username_from_form == user_data[username_from_form].username && password_from_form == user_data[username_from_form].password) { // success
         response.send(invoice);
     } else {
         response.send('An error has ocurred, please go back to the previously working page.');
     }
 });
 
-// this is the register form for new users  
+// this is the register form for new users taken from Lab14, added in parameters for username, password, email, and name
+// pattern for email was from W3schools
 expressApp.get("/register", function (request, response) {
-    // Give a simple register form
     str = `
 <body>
 <h3>We couldn't find any matching account data.  Please create an account to finish processing your order!</h3><br>
 <form action="/register" method="POST">
-<input type="text" name="username" size="40" placeholder="enter username" ><br>
-<input type="password" name="password" size="40" placeholder="enter password"><br>
+<input type="text" name="username" pattern="[A-Za-z0-9].{4,10}" size="40" placeholder="enter username" title="Can only contain alphanumeric characters and must be between 4 - 10 characters"><br>
+<input type="password" name="password" pattern=".{6,}" size="40" placeholder="enter password" title="Must be at least 6 characters"><br>
 <input type="password" name="repeat_password" size="40" placeholder="enter password again"><br>
-<input type="text" name="name" size="40" placeholder="enter your first and last name"><br>
-<input type="email" name="email" size="40" placeholder="enter email"><br>
+<input type="text" name="name" pattern="[A-Z a-z.,_].{1,}" size="40" placeholder="enter your name" title="Only alphabetic characters and . , are allowed"><br>
+<input type="email" name="email" size="40" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="enter email" title="Must be a valid e-mail address"><br>
 <input type="submit" value="Submit" id="submit">
 </form>
 </body>
@@ -114,11 +112,12 @@ expressApp.get("/register", function (request, response) {
  expressApp.post("/register", function (request, response) {
     // process a simple register form
     POST = request.body;
+    username_from_form = POST['username'].toLowerCase(); // work-around for making usernames case insensitive by making all usernames lowercase
     if (POST['username'] != undefined && POST['password'] != undefined) {
-        if (POST['username'] != user_data['username'] && POST['password'] == POST['repeat_password']) {
-        username = POST['username'].toLowerCase();
+        if (username_from_form != user_data[username_from_form].username && POST['password'] == POST['repeat_password']) { // this checks for if the username is already in use and if the passwords match up
+        username = username_from_form;
         user_data[username] = {};
-        user_data[username].username = POST['username'];
+        user_data[username].username = username_from_form;
         user_data[username].password = POST['password'];
         user_data[username].name = POST['name']
         user_data[username].email = POST['email'];
@@ -127,9 +126,11 @@ expressApp.get("/register", function (request, response) {
         fs.writeFileSync(userDatabase, data, 'utf-8');
         
         response.send(invoice);
+        } else if (username_from_form == user_data[username_from_form].username) { // due to how I am doing this without using query strings (why have I done this to myself), users HAVE to be taken back home unless they want an empty invoice
+            response.send(`Looks like you're already registered with us!  Please click the button and re-enter your order from the store page.<br><button onclick="location.href='/store.html'">Return Home</button>`);
         }
     } else {
-        response.send(`Please go back to the register page.`);
+        response.send(`An error has ocurred, please go back to the previously working page.`);
     }
  });
  
