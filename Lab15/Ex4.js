@@ -11,6 +11,7 @@ app.use(myParser.urlencoded({ extended: true }));
 
 var fs = require('fs');
 const { response } = require('express');
+const { SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION } = require('constants');
 var filename = "user_data.json";
 
 if (fs.existsSync(filename)) {
@@ -40,6 +41,7 @@ app.get("/use_cookie", function (request, response){
 app.get("/use_session", function (request, response){
     // print the value of session id
     response.send(`welcome, your session ID is ${request.session.id}`);
+    request.session.destroy();
 });
 
 app.get("/login", function (request, response) {
@@ -56,25 +58,30 @@ app.get("/login", function (request, response) {
     response.send(str);
  });
 
+// Handle the login form information, including session the session variables for username and last_login
 app.post("/login", function (request, response) {
-    // Process login form POST and redirect to logged in page if ok, back to login page if not
-    console.log("Got a POST login request");
-    POST = request.body; // this will request from both username and password fields
-    user_name_from_form = POST['username'];
-    if (user_data.user_name_from_form != 'undefined') {
-        //response.send(`<h3>User ${POST['username']} logged in.</h3>`);
-        if (typeof request.session.last_login != 'undefined') {
-        var msg = `You last logged in at ${request.session.last_login}`;
-        var now = new Date();
-        response.send();
+    // First save the request and, in particular, the username and password
+    POST = request.body;
+    user_name_from_form = POST["username"];
+    password_from_form = POST["password"];
+
+    // Now check to see if the username and password match what is on file
+    if (user_data[user_name_from_form] != undefined) {
+        password_on_file = user_data[user_name_from_form].password;
+        if (password_from_form == password_on_file) {
+            request.session.username = user_name_from_form;
+            if (typeof request.session.last_login != 'undefined') {
+                var msg = `You last logged in at ${request.session.last_login}`;
+                var now = new Date();
+            } else {
+                var msg = '';
+                var now = 'first visit!';
+            }
+            request.session.last_login = now;
+            response.cookie('username', user_name_from_form).send(`${msg}<BR>${user_name_from_form} logged in at ${now}`);
         } else {
-            var msg = '';
-            var now = 'First visit!';
+            response.send(`<h3>Please re-enter login info</h3>`);
         }
-        request.session.last_login = now;
-        response.cookie('username', user_name_from_form).send(`${msg} using ${user_name_from_form} at ${now}.`);
-    } else {
-        response.send(`<h3>Please re-enter login information.</h3>`);
     }
 });
 
