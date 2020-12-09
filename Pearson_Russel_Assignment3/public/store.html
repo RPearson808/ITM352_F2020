@@ -1,0 +1,60 @@
+<!--functions for the webpage will go here-->
+<script>
+// isNonNegInt function
+    function isNonNegInt(stringToCheck, returnErrors = false) {
+        errors = []; // Assume no errors at first
+    // First check if string is a number value
+        if (Number(stringToCheck) != stringToCheck) errors.push('Please enter a valid number.');
+    // Then check if it is non-negative
+        if (stringToCheck < 0) errors.push('Please enter a non-negative amount.');
+    // Finally check that it is an integer
+        if (parseInt(stringToCheck) != stringToCheck) errors.push('Please enter an amount without any decimals.');
+
+    return returnErrors ? errors : (errors.length == 0);
+    }
+
+// checkQuantityTextbox from Lab13
+    function checkQuantityTextbox(theTextbox) {
+        errs = isNonNegInt(theTextbox.value, true);
+        document.getElementById(theTextbox.name + '_message').innerHTML = errs.join(", ");
+    }
+</script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Russel's Power Nine Store</title>
+    <script src="products.js"></script>
+    <script src="../server.js"></script> 
+    <script src="../invoiceGen.js"></script> 
+    <link rel="stylesheet" href="store-style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Russel's <i>Magic: The Gathering</i> Rare Cards Store</h1>
+    </header>
+    <div>
+    <form name='quantity_form' action="/process_form" method="POST">
+        <script>
+            for (i in products_array) {
+                document.write(`<h3>${products_array[i]["name"]} at \$${products_array[i]["price"]}</h3>`);
+                document.write(`
+        <img src="${products_array[i]["img"]}"> <br><br>
+        <label for="quantity_textbox">Quantity Desired:</label>
+        <input type="text" name="quantity_textbox${i}" onkeyup="checkQuantityTextbox();">
+        <span id="quantity_textbox${i}_message"></span>
+        `);
+            }
+        </script>
+        </div>
+        <br>
+        <div class="purchase">
+        <input type="submit" value='Purchase' name="purchase_submit_button">
+        </div>
+    </form>
+</body>
+
+</html>
