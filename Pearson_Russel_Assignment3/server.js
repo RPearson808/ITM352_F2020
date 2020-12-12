@@ -12,7 +12,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
 // initialize user database
-var userDatabase = 'userData.json';
+var userDatabase = './secure/userData.json';
 
 // telling express what folder to serve
 expressApp.use(express.static('./public'));
@@ -40,17 +40,20 @@ expressApp.all('*', function (request, response, next) {
 });
 
 expressApp.get("/login", function (request, response) {
-    contents = fs.readFileSync('./public/login.html', 'utf-8');
+    contents = fs.readFileSync('./secure/login.html', 'utf-8');
     response.send(contents);
 });
 
 expressApp.post("/login", function (request, response) {
     POST = request.body;
     console.log(POST); // for checking internally if POST is being read correctly.
-    username_from_form = POST['username'].toLowerCase();
+    username_from_form = POST['username'];
     password_from_form = POST['password'];
-    if (username_from_form == user_data[username_from_form]['auth'] && password_from_form == user_data[username_from_form]['password']) {
-        str = `${username_from_form} = ${user_data}['${username_from_form}']['username']`;
+    loginAuth = username_from_form.toLowerCase();
+    if (loginAuth == user_data[loginAuth]['authID'] && password_from_form == user_data[loginAuth]['password']) {
+        cookieData = user_data[loginAuth]['username'];
+        response.cookie('username', cookieData, { maxAge: 300000 }).send;
+        str = `${username_from_form} = ${user_data[loginAuth]['username']}, cookie is ${request.cookies.username}`;
         response.send(str);
     } else {
         str = `${username_from_form} is not the same as ${user_data}[${username_from_form}]['username']`;
@@ -59,15 +62,42 @@ expressApp.post("/login", function (request, response) {
 });
 
 expressApp.get("/register", function (request, response) {
-
+    contents = fs.readFileSync('./secure/register.html', 'utf-8');
+    response.send(contents);
 });
 
 expressApp.post("/register", function (request, response) {
-
+    POST = request.body;
+    if (POST['username'] != '' && POST['password'] != '' && POST['repeat_password'] != '' && POST['email'] != '' && POST['name'] != '') {
+        newUser = POST['username'].toLowerCase();
+        user_data[newUser] = {};
+        user_data[newUser].authID = newUser
+        user_data[newUser].username = POST['username'];
+        user_data[newUser].password = POST['password'];
+        user_data[newUser].name = POST['name'];
+        user_data[newUser].email = POST['email'];
+        data = JSON.stringify(user_data);
+        fs.writeFileSync(userDatabase, data, 'utf-8');
+        response.redirect('/login');
+    } else {
+        str = 'registration failed';
+        response.send(str);
+    }
 });
 
-expressApp.post("/process_form", function (request, response) {
+expressApp.get("/cart", function (request, response) {
+    contents = fs.readFileSync('./secure/cart.html', 'utf-8');
+    response.send(contents);
+});
 
+expressApp.get("/checkout", function (request, response) {
+    contents = fs.readFileSync('./secure/checkout.html', 'utf-8');
+    response.send(contents);
+});
+
+expressApp.get("/invoice", function (request, response) {
+    contents = fs.readFileSync('./secure/invoice.html', 'utf-8');
+    response.send(contents);
 });
 
 expressApp.listen(8080, () => console.log(`listening on port 8080`));

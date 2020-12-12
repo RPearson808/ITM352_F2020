@@ -19,6 +19,12 @@
 </head>
 
 <body>
+    <header>
+        <h3>Shop</h3>
+        <div class="navBar" id="navBar">
+            <form action="/login" method="GET"><input type="submit" value="Log In"></form>
+        </div>
+    </header>
     <div class="page" id="Page1">
         <script>
             for (i in products_array) {
@@ -36,10 +42,10 @@
             }
         </script>
         <footer>
-            < 1 <a href="#" onclick="return show('Page2','Page1');">2</a>
-                <a href="#" onclick="return show('Page3','Page1');">3</a>
-                <a href="#" onclick="return show('Page4','Page1');">4</a>
-                >
+            1 
+            <a href="#" onclick="return show('Page2','Page1');">2</a>
+            <a href="#" onclick="return show('Page3','Page1');">3</a>
+            <a href="#" onclick="return show('Page4','Page1');">4</a>
         </footer>
     </div>
 
@@ -60,11 +66,10 @@
             }
         </script>
         <footer>
-            < <a href="#" onclick="return show('Page1','Page2');">1</a>
-                2
-                <a href="#" onclick="return show('Page3','Page2');">3</a>
-                <a href="#" onclick="return show('Page4','Page2');">4</a>
-                >
+            <a href="#" onclick="return show('Page1','Page2');">1</a>
+            2
+            <a href="#" onclick="return show('Page3','Page2');">3</a>
+            <a href="#" onclick="return show('Page4','Page2');">4</a>
         </footer>
     </div>
 
@@ -85,11 +90,10 @@
             }
         </script>
         <footer>
-            < <a href="#" onclick="return show('Page1','Page3');">1</a>
-                <a href="#" onclick="return show('Page2','Page3');">2</a>
-                3
-                <a href="#" onclick="return show('Page4','Page3');">4</a>
-                >
+            <a href="#" onclick="return show('Page1','Page3');">1</a>
+            <a href="#" onclick="return show('Page2','Page3');">2</a>
+            3
+            <a href="#" onclick="return show('Page4','Page3');">4</a>
         </footer>
     </div>
 
@@ -110,11 +114,10 @@
             }
         </script>
         <footer>
-            < <a href="#" onclick="return show('Page1','Page4');">1</a>
-                <a href="#" onclick="return show('Page2','Page4');">2</a>
-                <a href="#" onclick="return show('Page3','Page4');">3</a>
-                4
-                >
+            <a href="#" onclick="return show('Page1','Page4');">1</a>
+            <a href="#" onclick="return show('Page2','Page4');">2</a>
+            <a href="#" onclick="return show('Page3','Page4');">3</a>
+            4
         </footer>
     </div>
 </body>

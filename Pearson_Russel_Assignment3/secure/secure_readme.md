@@ -1,0 +1,3 @@
+The purpose of this folder is to help organize files I don't want users to access.  This is because I am trying to put less strain on the server for processing things by having separate pages and have a more decentralized website.  Instead of having the server process every single page, it'll just use FileSync to read the contents of the page and process inputs that way.  This should lead to less strain on the server and allow greater flexibility in how the website is built.
+
+As server.js can only serve files in the public folder, anything in here will be unaccessible to users and cannot be accessed by trying to type in the file path directly in the URL bar.
