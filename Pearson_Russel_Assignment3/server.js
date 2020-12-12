@@ -10,6 +10,7 @@ var bodyParser = require("body-parser");
 var fs = require('fs');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var path = require('path');
 
 // initialize user database
 var userDatabase = './secure/userData.json';
@@ -30,13 +31,17 @@ if (fs.existsSync(userDatabase)) {
 
 // allowing express to use sessions and cookies
 expressApp.use(session(
-    { secret: "ITM352 rocks!" }
+    { secret: "Mellon", saveUninitialized: false, resave: false }
 ));
 expressApp.use(cookieParser());
 
 expressApp.all('*', function (request, response, next) {
     console.log(request.method + ' to ' + request.path);
     next();
+});
+
+expressApp.get('/', function (request, response) {
+
 });
 
 expressApp.get("/login", function (request, response) {
@@ -53,8 +58,7 @@ expressApp.post("/login", function (request, response) {
     if (loginAuth == user_data[loginAuth]['authID'] && password_from_form == user_data[loginAuth]['password']) {
         cookieData = user_data[loginAuth]['username'];
         response.cookie('username', cookieData, { maxAge: 300000 }).send;
-        str = `${username_from_form} = ${user_data[loginAuth]['username']}, cookie is ${request.cookies.username}`;
-        response.send(str);
+        response.redirect('/');
     } else {
         str = `${username_from_form} is not the same as ${user_data}[${username_from_form}]['username']`;
         response.send(str);
@@ -99,5 +103,15 @@ expressApp.get("/invoice", function (request, response) {
     contents = fs.readFileSync('./secure/invoice.html', 'utf-8');
     response.send(contents);
 });
+
+expressApp.get("/get_cookie", function (request, response) {
+    contents = request.cookies.username;
+    response.send(contents);
+});
+
+expressApp.get("/session_check", function (request, response) {
+    contents = request.session.id;
+    response.send(contents);
+})
 
 expressApp.listen(8080, () => console.log(`listening on port 8080`));
