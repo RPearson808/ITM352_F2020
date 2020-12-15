@@ -9,12 +9,13 @@
             document.getElementById(shown).style.display = 'block';
             document.getElementById(hidden).style.display = 'none';
             return false;
-        }
+        };
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store Assignment3</title>
     <script src="products.js"></script>
+    <script src="server.js"></script>
     <link rel="stylesheet" href="index-style.css">
 </head>
 
@@ -22,13 +23,15 @@
     <header>
         <h3>Shop</h3>
         <div class="navBar" id="navBar">
-            <span id="name_display">hi</span> <form name="login" action="/login" method="GET"><input type="submit" value="Log In"></form>
+            <span id="name_display"></span><form name="login" action="/login" method="GET"><input type="submit" value="Log In"></form>
         </div>
     </header>
 
     <span id="cookie">cookies are not working<script>
-        cookie = document.cookie;
-        document.getElementById('cookie').innerHTML = username;
+        var cookie = document.cookie;
+        var test = cookie.replace('login=','');
+        var display = test.replace('%20',' ');
+        document.getElementById('cookie').innerHTML = display;
     </script></span>
 
     <div class="cart" id="cart">cart

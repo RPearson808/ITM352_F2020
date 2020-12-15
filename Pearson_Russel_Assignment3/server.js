@@ -10,7 +10,6 @@ var bodyParser = require("body-parser");
 var fs = require('fs');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var path = require('path');
 
 // initialize user database
 var userDatabase = './secure/userData.json';
@@ -56,8 +55,8 @@ expressApp.post("/login", function (request, response) {
     password_from_form = POST['password'];
     loginAuth = username_from_form.toLowerCase();
     if (loginAuth == user_data[loginAuth]['authID'] && password_from_form == user_data[loginAuth]['password']) {
-        cookieData = user_data[loginAuth]['username'];
-        response.cookie('username', cookieData, { maxAge: 300000 }).send;
+        displayName = user_data[loginAuth]['name'];
+        response.cookie('login', displayName);
         response.redirect('/');
     } else {
         str = `${username_from_form} is not the same as ${user_data}[${username_from_form}]['username']`;
@@ -105,13 +104,20 @@ expressApp.get("/invoice", function (request, response) {
 });
 
 expressApp.get("/get_cookie", function (request, response) {
-    contents = request.cookies.username;
+    contents = request.cookies;
     response.send(contents);
 });
 
 expressApp.get("/session_check", function (request, response) {
     contents = request.session.id;
     response.send(contents);
+});
+
+expressApp.get("/logout", function (request, response) {
+    response.cookie('login','', {MaxAge: 0} ).send;
+    request.session.destroy();
+    // response.alert('You have signed out').send;
+    response.redirect('/');
 })
 
 expressApp.listen(8080, () => console.log(`listening on port 8080`));
