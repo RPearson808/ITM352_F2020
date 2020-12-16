@@ -114,9 +114,8 @@ expressApp.get("/session_check", function (request, response) {
 });
 
 expressApp.get("/logout", function (request, response) {
-    response.cookie('login','', {MaxAge: 0} ).send;
+    response.clearCookie('login');
     request.session.destroy();
-    // response.alert('You have signed out').send;
     response.redirect('/');
 })
 

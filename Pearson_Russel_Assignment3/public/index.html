@@ -22,16 +22,29 @@
     <header>
         <h3>Shop</h3>
         <div class="navBar" id="navBar">
-            <span id="name_display"></span><form name="login" action="/login" method="GET"><input type="submit" value="Log In"></form>
+            <span id="name_display" class="name_display">
+                <script>
+                if (document.cookie != '') {
+                var cookie = document.cookie.replace('login=','');
+                var display = cookie.replace('%20',' ');
+                document.getElementById('name_display').innerHTML = display;
+                } else {
+                document.getElementById('name_display').innerHTML = "no cookie here";
+                };
+                </script>
+            </span>
+            <span id="login_register_logout" class="button">
+                <script>
+                    if (document.cookie != '') {
+                        document.getElementById('login_register_logout').innerHTML = `<form name="logout" action="/logout" method="GET"><input type="submit" value="Log Out"></form>`;
+                    } else {
+                        document.getElementById('login_register_logout').innerHTML = `<form name="login" action="/login" method="GET"><input type="submit" value="Log In"></form>
+                                                                                <form name="register" action="/register" method="GET"><input type="submit" value="Register"></form>`;
+                    };
+                </script>
+            </span>
         </div>
     </header>
-
-    <span id="cookie">cookies are not working<script>
-        var cookie = document.cookie;
-        var test = cookie.replace('login=','');
-        var display = test.replace('%20',' ');
-        document.getElementById('cookie').innerHTML = display;
-    </script></span>
 
     <div class="cart" id="cart">cart
         <div class="cart_head">cart head
