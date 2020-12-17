@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        // function originally found on StackOverflow
+        function show(shown, hidden) {
+            document.getElementById(shown).style.display = 'block';
+            document.getElementById(hidden).style.display = 'none';
+            return false;
+        };
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Assignment3</title>
+    <script src="products.js"></script>
+    <link rel="stylesheet" href="index-style.css">
+</head>
+
+<body>
+    <header>
+        <h3>Shop</h3>
+        <div class="navBar" id="navBar">
+            <span id="name_display" class="name_display">
+                <script>
+                if (document.cookie != '') {
+                var cookie = document.cookie.replace('login=','');
+                var display = cookie.replace('%20',' ');
+                document.getElementById('name_display').innerHTML = display;
+                } else {
+                document.getElementById('name_display').innerHTML = "no cookie here";
+                };
+                </script>
+            </span>
+            <span id="login_register_logout" class="button">
+                <script>
+                    if (document.cookie != '') {
+                        document.getElementById('login_register_logout').innerHTML = `<form name="logout" action="/logout" method="GET"><input type="submit" value="Log Out"></form>`;
+                    } else {
+                        document.getElementById('login_register_logout').innerHTML = `<form name="login" action="/login" method="GET"><input type="submit" value="Log In"></form>
+                                                                                <form name="register" action="/register" method="GET"><input type="submit" value="Register"></form>`;
+                    };
+                </script>
+            </span>
+        </div>
+    </header>
+
+    <div class="cart" id="cart">cart
+        <div class="cart_head">cart head
+            <span id="product_quantity">0</span> item(s) in your cart
+        </div>
+        <ul class="cart_contents">
+            cart contents
+        </ul>
+        <div class="cart_buttons">
+            
+        </div>
+    </div>
+        <div class="page" id="Page1">
+            <script>
+                for (i in products_array) {
+                    if (i <= 2) {
+                        document.write(`<h3>${products_array[i]["name"]} at \$${products_array[i]["price"]}</h3>`);
+                        document.write(`<img src="${products_array[i]["img"]}">`);
+                    } else if (i > 3) {
+                        break;
+                    }
+                }
+            </script>
+            <footer>
+                1
+                <a href="#" onclick="return show('Page2','Page1');">2</a>
+                <a href="#" onclick="return show('Page3','Page1');">3</a>
+                <a href="#" onclick="return show('Page4','Page1');">4</a>
+            </footer>
+        </div>
+
+        <div class="page" id="Page2" style="display:none">
+            <script>
+                for (i in products_array) {
+                    if (i > 2 && i <= 5) {
+                        document.write(`<h3>${products_array[i]["name"]} at \$${products_array[i]["price"]}</h3>`);
+                        document.write(`<img src="${products_array[i]["img"]}">`);
+                    } else if (i > 5) {
+                        break;
+                    }
+                }
+            </script>
+            <footer>
+                <a href="#" onclick="return show('Page1','Page2');">1</a>
+                2
+                <a href="#" onclick="return show('Page3','Page2');">3</a>
+                <a href="#" onclick="return show('Page4','Page2');">4</a>
+            </footer>
+        </div>
+
+        <div class="page" id="Page3" style="display:none">
+            <script>
+                for (i in products_array) {
+                    if (i > 5 && i <= 8) {
+                        document.write(`<h3>${products_array[i]["name"]} at \$${products_array[i]["price"]}</h3>`);
+                        document.write(`<img src="${products_array[i]["img"]}">`);
+                    } else if (i > 8) {
+                        break;
+                    }
+                }
+            </script>
+            <footer>
+                <a href="#" onclick="return show('Page1','Page3');">1</a>
+                <a href="#" onclick="return show('Page2','Page3');">2</a>
+                3
+                <a href="#" onclick="return show('Page4','Page3');">4</a>
+            </footer>
+        </div>
+
+        <div class="page" id="Page4" style="display:none">
+            <script>
+                for (i in products_array) {
+                    if (i > 8 && i <= 11) {
+                        document.write(`<h3>${products_array[i]["name"]} at \$${products_array[i]["price"]}</h3>`);
+                        document.write(`<img src="${products_array[i]["img"]}">`);
+                    } else if (i > 11) {
+                        break;
+                    }
+                }
+            </script>
+            <footer>
+                <a href="#" onclick="return show('Page1','Page4');">1</a>
+                <a href="#" onclick="return show('Page2','Page4');">2</a>
+                <a href="#" onclick="return show('Page3','Page4');">3</a>
+                4
+            </footer>
+        </div>
+</body>
+
+</html>

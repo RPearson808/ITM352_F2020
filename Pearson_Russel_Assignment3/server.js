@@ -13,6 +13,7 @@ var session = require('express-session');
 
 // initialize user database
 var userDatabase = './secure/userData.json';
+var sessionStorage = './secure/sessionStorage.js';
 
 // telling express what folder to serve
 expressApp.use(express.static('./public'));
@@ -26,7 +27,7 @@ if (fs.existsSync(userDatabase)) {
 } else {
     console.log("ERROR: Unable to read file " + userDatabase);
     exit();
- }
+}
 
 // allowing express to use sessions and cookies
 expressApp.use(session(
@@ -71,35 +72,46 @@ expressApp.get("/register", function (request, response) {
 
 expressApp.post("/register", function (request, response) {
     POST = request.body;
-    if (POST['username'] != '' && POST['password'] != '' && POST['repeat_password'] != '' && POST['email'] != '' && POST['name'] != '') {
-        newUser = POST['username'].toLowerCase();
-        user_data[newUser] = {};
-        user_data[newUser].authID = newUser
-        user_data[newUser].username = POST['username'];
-        user_data[newUser].password = POST['password'];
-        user_data[newUser].name = POST['name'];
-        user_data[newUser].email = POST['email'];
-        data = JSON.stringify(user_data);
-        fs.writeFileSync(userDatabase, data, 'utf-8');
-        response.redirect('/login');
+    newUser = POST['username'].toLowerCase();
+    if (user_data[newUser] == undefined) {
+        if (POST['username'] != '' && POST['password'] != '' && POST['repeat_password'] != '' && POST['email'] != '' && POST['name'] != '') {
+            user_data[newUser] = {};
+            user_data[newUser].authID = newUser
+            user_data[newUser].username = POST['username'];
+            user_data[newUser].password = POST['password'];
+            user_data[newUser].name = POST['name'];
+            user_data[newUser].email = POST['email'];
+            data = JSON.stringify(user_data);
+            fs.writeFileSync(userDatabase, data, 'utf-8');
+            displayName = user_data[newUser]['name'];
+            response.cookie("login", displayName).send;
+            response.redirect("/");
+        } else {
+            str = 'registration failed';
+            response.send(str);
+        }
     } else {
-        str = 'registration failed';
+        str = 'user already exists';
         response.send(str);
     }
 });
 
-expressApp.get("/cart", function (request, response) {
+expressApp.post("/cart", function (request, response) {
+    POST = request.body;
+    test = POST['test'];
     contents = fs.readFileSync('./secure/cart.html', 'utf-8');
+    contents += test;
     response.send(contents);
 });
 
-expressApp.get("/checkout", function (request, response) {
+expressApp.post("/checkout", function (request, response) {
     contents = fs.readFileSync('./secure/checkout.html', 'utf-8');
     response.send(contents);
 });
 
 expressApp.get("/invoice", function (request, response) {
     contents = fs.readFileSync('./secure/invoice.html', 'utf-8');
+    contents += "<span>hello</span>";
     response.send(contents);
 });
 
