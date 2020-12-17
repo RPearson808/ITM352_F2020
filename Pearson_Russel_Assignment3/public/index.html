@@ -1,3 +1,31 @@
+<script>
+    var cookie = document.cookie.replace('login=', '');
+    var display = cookie.replace('%20', ' ');
+
+    function SaveItem() {
+        var name = document.forms.ShoppingList.name.value;
+        var data = document.forms.ShoppingList.data.value;
+        sessionStorage.setItem(name, data);
+    }
+
+    function ModifyItem() {
+        var name1 = document.forms.ShoppingList.name.value;
+        var data1 = document.forms.ShoppingList.data.value;
+        //check if name1 is already exists
+
+        //Check if key exists.
+        if (sessionStorage.getItem(name1) != null) {
+            //update
+            sessionStorage.setItem(name1, data1);
+            document.forms.ShoppingList.data.value = sessionStorage.getItem(name1);
+        }
+    }
+
+    function RemoveItem() {
+        var name = document.forms.ShoppingList.name.value;
+        document.forms.ShoppingList.data.value = sessionStorage.removeItem(name);
+    }   
+</script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,13 +43,11 @@
         <div class="navBar" id="navBar">
             <span id="name_display" class="name_display">
                 <script>
-                if (document.cookie != '') {
-                var cookie = document.cookie.replace('login=','');
-                var display = cookie.replace('%20',' ');
-                document.getElementById('name_display').innerHTML = display;
-                } else {
-                document.getElementById('name_display').innerHTML = "no cookie here";
-                };
+                    if (document.cookie != '') {
+                        document.getElementById('name_display').innerHTML = display;
+                    } else {
+                        document.getElementById('name_display').innerHTML = "no cookie here";
+                    };
                 </script>
             </span>
             <span id="login_register_logout" class="button">
@@ -35,10 +61,35 @@
                 </script>
             </span>
         </div>
+        <div id="cart_quantity">
+            <script>
+                var quantity = 0;
+                if (i=0;i<sessionStorage.length;i++) {
+                    
+                }
+                document.getElementById("cart_quantity").innerHTML = quantity;
+            </script>
+        </div>
     </header>
-</div> 
 
-<form action="/cart" method="POST"><input type="text" name="test"><input type="submit"></form>
+    <form name="ShoppingList">
+        <fieldset>
+            <legend>Shopping cart</legend>
+            <label>Item: <input type="text" name="name"></label>
+            <label>Quantity: <input type="text" name="data"></label>
+
+            <input type="button" value="Save" onclick="SaveItem()">
+            <input type="button" value="Update" onclick="ModifyItem()">
+            <input type="button" value="Delete" onclick="RemoveItem()">
+        </fieldset>
+        <div id="items_table">
+            <h2>Shopping List</h2>
+            <table id="list"></table>
+            <label><input type="button" value="Clear" onclick="ClearAll()">
+                * Delete all items</label>
+        </div>
+    </form>
+
 
 </body>
 
