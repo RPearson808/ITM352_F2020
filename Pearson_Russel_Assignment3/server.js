@@ -104,7 +104,7 @@ expressApp.post("/cart", function (request, response) {
     response.send(contents);
 });
 
-expressApp.post("/checkout", function (request, response) {
+expressApp.get("/checkout", function (request, response) {
     contents = fs.readFileSync('./secure/checkout.html', 'utf-8');
     response.send(contents);
 });

@@ -1,67 +1,6 @@
 <script>
     var cookie = document.cookie.replace('login=', '');
     var display = cookie.replace('%20', ' ');
-
-    function SaveItem() {
-        var name = document.forms.ShoppingList.name.value;
-        var data = document.forms.ShoppingList.data.value;
-        sessionStorage.setItem(name, data);
-    }
-
-    function ModifyItem() {
-        var name1 = document.forms.ShoppingList.name.value;
-        var data1 = document.forms.ShoppingList.data.value;
-        //check if name1 is already exists
-
-        //Check if key exists.
-        if (sessionStorage.getItem(name1) != null) {
-            //update
-            sessionStorage.setItem(name1, data1);
-            document.forms.ShoppingList.data.value = sessionStorage.getItem(name1);
-        }
-    }
-
-    function RemoveItem() {
-        var name = document.forms.ShoppingList.name.value;
-        document.forms.ShoppingList.data.value = sessionStorage.removeItem(name);
-    }
-
-    function CheckBrowser() {
-    if ('sessionStorage' in window && window['sessionStorage'] !== null) {
-        // We can use sessionStorage object to store data.
-        return true;
-    } else {
-            return false;
-    }
-}
-
-function doShowAll() {
-    if (CheckBrowser()) {
-        var key = "";
-        var list = "<tr><th>Item</th><th>Value</th></tr>\n";
-        var i = 0;
-        //For a more advanced feature, you can set a cap on max items in the cart.
-        for (i = 0; i <= sessionStorage.length-1; i++) {
-            key = sessionStorage.key(i);
-            list += "<tr><td>" + key + "</td>\n<td>"
-                    + sessionStorage.getItem(key) + "</td></tr>\n";
-        }
-        //If no item exists in the cart.
-        if (list == "<tr><th>Item</th><th>Value</th></tr>\n") {
-            list += "<tr><td><i>empty</i></td>\n<td><i>empty</i></td></tr>\n";
-        }
-        //Bind the data to HTML table.
-        //You can use jQuery, too.
-        document.getElementById('list').innerHTML = list;
-    } else {
-        alert('Cannot save shopping list as your browser does not support HTML 5');
-    }
-}
-
-function ClearAll() {
-    sessionStorage.clear();
-    doShowAll();
-}
 </script>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,7 +13,7 @@ function ClearAll() {
     <link rel="stylesheet" href="index-style.css">
 </head>
 
-<body onload="doShowAll();">
+<body onload="doShowAll()">
     <header>
         <h3>Shop</h3>
         <div class="navBar" id="navBar">
@@ -100,26 +39,19 @@ function ClearAll() {
         </div>
         <div id="cart_quantity">
             <script>
-                /*
-                var quantity = 0;
-                if (i=0;i<sessionStorage.length;i++) {
-                    
-                }
-                document.getElementById("cart_quantity").innerHTML = quantity;
-                */
             </script>
         </div>
     </header>
 
-    <form name="ShoppingList">
+    <form name="ShoppingList0" id="ShoppingList0" class="shoppinglist">
         <fieldset>
             <legend>Shopping cart</legend>
             <label>Item: <input type="text" name="name"></label>
             <label>Quantity: <input type="text" name="data"></label>
 
-            <input type="button" value="Save" onclick="SaveItem()">
-            <input type="button" value="Update" onclick="ModifyItem()">
-            <input type="button" value="Delete" onclick="RemoveItem()">
+            <input type="button" id="add0" value="Save" onclick="SaveItem()">
+            <input type="button" id="modify0" value="Update" onclick="ModifyItem()">
+            <input type="button" id="test0" value="Delete" onclick="RemoveItem()">
         </fieldset>
         <div id="items_table">
             <h2>Shopping List</h2>
@@ -129,7 +61,115 @@ function ClearAll() {
         </div>
     </form>
 
+    <form name="ShoppingList1" id="ShoppingList1" class="shoppinglist">
+        <fieldset>
+            <legend>Shopping cart</legend>
+            <label>Item: <input type="text" name="name"></label>
+            <label>Quantity: <input type="text" name="data"></label>
+
+            <input type="button" id="add1" value="Save" onclick="SaveItem()">
+            <input type="button" id="modify1" value="Update" onclick="ModifyItem()">
+            <input type="button" id="test1" value="Delete" onclick="RemoveItem()">
+        </fieldset>
+        <div id="items_table">
+            <h2>Shopping List</h2>
+            <table id="list"></table>
+            <label><input type="button" value="Clear" onclick="ClearAll()">
+                * Delete all items</label>
+        </div>
+    </form>
+
+<form id="checkout" action="/checkout" method="GET"><input type="submit"></form>
 
 </body>
+<script>
+    function SaveItem() {
+        var buttonId = event.srcElement.id;
+        var j = document.getElementsByClassName('shoppinglist').length;
+        for (i = 0; i <= j; i++) {
+            var checkId = document.getElementById(`add${i}`).id;
+            if (buttonId == checkId) {
+                var form = document.getElementById(`ShoppingList${i}`);
+                var name = form.name.value;
+                var data = form.data.value;
+                sessionStorage.setItem(name, data);
+                location.reload();
+                break;
+            }
+        }
+    }
+
+    function ModifyItem() {
+        var buttonId = event.srcElement.id;
+        var j = document.getElementsByClassName('shoppinglist').length;
+        for (i = 0; i <= j; i++) {
+            var checkId = document.getElementById(`modify${i}`).id;
+            if (buttonId == checkId) {
+                var form = document.getElementById(`ShoppingList${i}`);
+                var name1 = form.name.value;
+                var data1 = form.data.value;
+                break;
+            }
+        }
+        if (sessionStorage.getItem(name1) != null) {
+            //update
+            sessionStorage.setItem(name1, data1);
+            form.data.value = sessionStorage.getItem(name1);
+            location.reload();
+        }
+    }
+
+    function RemoveItem() {
+        var buttonId = event.srcElement.id;
+        var j = document.getElementsByClassName('shoppinglist').length;
+        for (i = 0; i <= j; i++) {
+            var checkId = document.getElementById(`test${i}`).id;
+            if (buttonId == checkId) {
+                var form = document.getElementById(`ShoppingList${i}`);
+                var name = form.name.value;
+                sessionStorage.removeItem(name);
+                location.reload();
+                break;
+            }
+        }
+    }
+
+    function CheckBrowser() {
+        if ('sessionStorage' in window && window['sessionStorage'] !== null) {
+            // We can use sessionStorage object to store data.
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function doShowAll() {
+        if (CheckBrowser()) {
+            var key = "";
+            var list = "<tr><th>Item</th><th>Value</th></tr>\n";
+            var i = 0;
+            //For a more advanced feature, you can set a cap on max items in the cart.
+            for (i = 0; i <= sessionStorage.length - 1; i++) {
+                key = sessionStorage.key(i);
+                list += "<tr><td>" + key + "</td>\n<td>"
+                    + sessionStorage.getItem(key) + "</td></tr>\n";
+            }
+            //If no item exists in the cart.
+            if (list == "<tr><th>Item</th><th>Value</th></tr>\n") {
+                list += "<tr><td></td>\n<td></td></tr>\n";
+            }
+            //Bind the data to HTML table.
+            //You can use jQuery, too.
+            document.getElementById('list').innerHTML = list;
+        } else {
+            alert('Cannot save shopping list as your browser does not support HTML 5');
+        }
+    }
+
+    function ClearAll() {
+        sessionStorage.clear();
+        doShowAll();
+    }
+</script>
 
 </html>
