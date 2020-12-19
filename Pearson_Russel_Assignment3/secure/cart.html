@@ -64,6 +64,7 @@
                 keyData.product = products_array[i]['name'];
                 keyData.price = products_array[i]['price'];
                 keyData.quantity = quantity;
+                keyData.img = products_array[i]['img'];
                 var keyCheck = JSON.stringify(keyData);
                 break;
             } else if (buttonId == checkId && isNonNegInt(quantity, true)) {

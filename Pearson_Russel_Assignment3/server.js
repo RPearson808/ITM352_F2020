@@ -15,6 +15,10 @@ var nodemailer = require('nodemailer');
 // initialize user database
 var userDatabase = './secure/userData.json';
 
+// initalize products
+var product_data = require('./public/products.js');
+var products = product_data.products_array;
+
 // telling express what folder to serve
 expressApp.use(express.static('./public'));
 expressApp.use(bodyParser.urlencoded({ extended: true }));
@@ -110,13 +114,48 @@ expressApp.get("/checkout", function (request, response) {
     response.send(contents);
 });
 
-expressApp.get("/invoice", function (request, response) {
+expressApp.post("/invoice", function (request, response) {
+    POST = request.body;
+    creditCard = POST['credit_card'];
+    response.cookie('creditCard', creditCard);
+    firstName = POST['first_name'];
+    response.cookie('firstName', firstName);
+    lastName = POST['last_name'];
+    response.cookie('lastName', lastName);
+    address1 = POST['address1'];
+    response.cookie('address1', address1);
+    address2 = POST['address2'];
+    response.cookie('address2', address2);
+    city = POST['city'];
+    response.cookie('city', city);
+    stateCode = POST['state'];
+    response.cookie('stateCode', stateCode);
+    postalCode = POST['postal_code'];
+    response.cookie('postalCode', postalCode);
     contents = fs.readFileSync('./secure/invoice.html', 'utf-8');
+    contents += `Shipping To: <br>
+                ${firstName} ${lastName} <br>
+                ${address1} ${address2} <br>
+                ${city}, ${stateCode} ${postalCode}
+                `;
     response.send(contents);
 });
 
-expressApp.post("/order_confirmation", function (request, response) {
-    var emailToSend = request.cookies.email;
+expressApp.get("/order_confirmation", function (request, response) {
+    emailToSend = request.cookies.email;
+    fname = request.cookies.firstName;
+    lname = request.cookies.lastName;
+    address1 = request.cookies.address1;
+    address2 = request.cookies.address2;
+    city = request.cookies.city;
+    state = request.cookies.stateCode;
+    zip = request.cookies.postalCode;
+    creditcard = request.cookies.creditCard;
+    var customerName = request.cookies.login;
+    var shipName = fname + " " + lname;
+    var address = address1 + " " + address2;
+    var city_state_zip = city + ", " + state + " " + zip;
+    var lastFourCC = creditcard.substr(-4);
     var transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465, // Google's SSL port
@@ -128,8 +167,19 @@ expressApp.post("/order_confirmation", function (request, response) {
     const message = {
         from: 'captainblue808@gmail.com', // Sender address
         to: `${emailToSend}`,         // List of recipients
-        subject: "Your purchase receipt from Russel's Store", // Subject line
-        text: 'EMAIL' // Plain text body
+        subject: "Thank you for shopping at Russel's store!", // Subject line
+        text: `Aloha ${customerName},
+        
+Mahalo for shopping at our store!  You can expect your order to be delieved in 5-7 business days.
+        
+As a reminder, this is the address we will be shipping to:
+${shipName}
+${address}
+${city_state_zip}
+
+We will be charging the credit card ending in ${lastFourCC}.  
+        
+Mahalo again for shopping with us ${customerName}!` // Plain text body
     };
     transporter.sendMail(message, function (err, info) {
         if (err) {
@@ -140,16 +190,14 @@ expressApp.post("/order_confirmation", function (request, response) {
     });
     contents = fs.readFileSync('./secure/confirm.html', 'utf-8');
     response.send(contents);
-});
-
-expressApp.get("/get_cookie", function (request, response) {
-    contents = request.cookies;
-    response.send(contents);
-});
-
-expressApp.get("/session_check", function (request, response) {
-    contents = request.session.id;
-    response.send(contents);
+    response.clearCookie('firstName');
+    response.clearCookie('lastName');
+    response.clearCookie('address1');
+    response.clearCookie('address2');
+    response.clearCookie('city');
+    response.clearCookie('stateCode');
+    response.clearCookie('postalCode');
+    response.clearCookie('creditCard');
 });
 
 expressApp.get("/logout", function (request, response) {
@@ -157,6 +205,16 @@ expressApp.get("/logout", function (request, response) {
     response.clearCookie('email');
     request.session.destroy();
     response.redirect('/');
+});
+
+expressApp.get("/get_cookie", function (request, response) { // for checking cookies
+    contents = request.cookies;
+    response.send(contents);
+});
+
+expressApp.get("/session_check", function (request, response) { // for checking session ID
+    contents = request.session.id;
+    response.send(contents);
 })
 
 expressApp.listen(8080, () => console.log(`listening on port 8080`));

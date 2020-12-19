@@ -1,27 +1,27 @@
 <script>
     function getCookie(name = '') {
-    let cookies = document.cookie;
-    let cookiestore = {};
-    
-    cookies = cookies.split(";");
-    
-    if (cookies[0] == "" && cookies[0][0] == undefined) {
-        return undefined;
-    }
-    
-    cookies.forEach(function(cookie) {
-        cookie = cookie.split(/=(.+)/);
-        if (cookie[0].substr(0, 1) == ' ') {
-            cookie[0] = cookie[0].substr(1);
+        let cookies = document.cookie;
+        let cookiestore = {};
+
+        cookies = cookies.split(";");
+
+        if (cookies[0] == "" && cookies[0][0] == undefined) {
+            return undefined;
         }
-        cookiestore[cookie[0]] = cookie[1];
-    });
-    
-    return (name !== '' ? cookiestore[name] : cookiestore);
-}
-    var x = getCookie('email');
-    var y = x.replace('email=', '');
-    var emailToSend = y.replace('%40', '@');
+
+        cookies.forEach(function (cookie) {
+            cookie = cookie.split(/=(.+)/);
+            if (cookie[0].substr(0, 1) == ' ') {
+                cookie[0] = cookie[0].substr(1);
+            }
+            cookiestore[cookie[0]] = cookie[1];
+        });
+
+        return (name !== '' ? cookiestore[name] : cookiestore);
+    }
+    var x = getCookie('login');
+    var y = x.replace('login=', '');
+    var displayName = y.replace('%20', ' ');
 </script>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,23 +33,50 @@
 </head>
 
 <body>
-    Invoice page
-    <script>
-        var extendedPrice = 0;
-        document.write('<table>');
-        document.write('<tr><th>Item Name</th><th>Price</th><th>Quantity</th><th>Extended Price</th></tr>');
-        for (i = 0; i < sessionStorage.length; i++) {
-            var displayProduct = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
-            extendedPrice = displayProduct['price'] * displayProduct['quantity'];
-            document.write(`<tr>
+    <form action="/order_confirmation" method="GET">
+        <div>
+            <script>
+                var subTotal = 0;
+                var taxRate = 0.07;
+                var shipRate = 0.1;
+                var visibleTaxRate = taxRate * 100;
+                document.write('<table border=1>')
+                document.write('<tr><th>Item Name</th><th>Price</th><th>Quantity</th><th>Extended Price</th></tr>');
+                for (i = 0; i < sessionStorage.length; i++) {
+                    var displayProduct = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
+                    var extendedPrice = displayProduct['price'] * displayProduct['quantity'];
+                    document.write(`<tr>
                     <td>${displayProduct['product']}</td>
                     <td>$${displayProduct['price'].toFixed(2)}</td>
                     <td>${displayProduct['quantity']}</td>
                     <td>$${extendedPrice.toFixed(2)}</td>
                     </tr>`);
-        }
-        document.write('</table>');
-    </script>
+                    subTotal += extendedPrice;
+                };
+                if (subTotal >= 3000) { // allows variable shipping rate
+                    shipRate = 0;
+                } else if (subTotal >= 2000 && subTotal < 3000) {
+                    shipRate = 0.03;
+                } else if (subTotal >= 1000 && subTotal < 2000) {
+                    shipRate = 0.05;
+                }
+                let shipPercent = shipRate * 100; // show customers shipping rate
+                let shipCost = subTotal * shipRate; // shipping cost
+                let taxAdd = taxRate * subTotal;
+                var grandTotal = subTotal + shipCost + taxAdd;
+                document.write("<tr></tr><tr></tr><tr></tr><tr></tr>"); // separator for rest of table
+                document.write(`<tr><td>Subtotal</td><td>$${subTotal.toFixed(2)}</td></tr>
+                                <tr><td>Shipping @ ${shipPercent.toFixed(0)}% of Subtotal</td><td>$${shipCost.toFixed(2)}</td></tr>
+                                <tr><td>Tax @ ${visibleTaxRate.toFixed(1)}% of Subtotal</td><td>$${taxAdd.toFixed(2)}</td></tr>
+                                <tr><td><b>Grand Total</b></td><td><b>$${grandTotal.toFixed(2)}</b></td></tr>`); //bolded grandtotal
+                document.write('</table>');
+                // last thing we will generate is the shipping policy
+                document.write("<h3>SHIPPING POLICY</h3>Due to the high price of these cards, we charge shipping based off your order subtotal - we don't apply sales tax on our shipping costs.<br><br>* Shipping rates for orders under $1000 will charged 7% of their subtotal as shipping. <br>* Shipping rates for orders between $1000 and $1999 will charged 5% of their subtotal as shipping. <br>* Shipping rates for orders between $2000 $2999 will charged 3% of their subtotal as shipping. <br>* Shipping rates for orders over $3000 will <b>NOT</b> charged any shipping -- it's on us!");
+            </script>
+        </div>
+        <br>
+        <input type="submit" value="Complete Purchase">
+    </form>
 </body>
 
 </html>
