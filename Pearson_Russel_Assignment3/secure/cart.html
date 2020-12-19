@@ -1,11 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="products.js"></script>
     <title>My Cart</title>
 </head>
+
 <body>
-    Cart page
+    <script>
+        var extendedPrice = 0;
+        document.write('<ul style="list-style-type:none;" class="itemInCart">');
+        //document.write('<tr><th>Item Name</th><th>Price</th><th>Quantity</th><th>Extended Price</th></tr>');
+        for (i = 0; i < sessionStorage.length; i++) {
+            var displayProduct = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
+            if (displayProduct != null) {
+                extendedPrice = displayProduct['price'] * displayProduct['quantity'];
+                document.write(`
+                        <li><img src=${displayProduct['img']}></li>
+                        <li>${displayProduct['product']}</li>
+                        <li>$${displayProduct['price'].toFixed(2)}</li>
+                        <li>${displayProduct['quantity']}</li>
+                        <li>$${extendedPrice.toFixed(2)}</li>
+                        <label>Quantity: </label><input type="text" id="product${i}_quantity" size="3"></input> <br>
+                        <input type="button" id="modify${i}" value="Modify Quantity" onclick="ModifyItem();"> </input>
+                        <input type="button" id="delete${i}" value="Remove From Cart" onclick="RemoveItem();"> </input>
+                    `);
+            }
+        }
+        document.write('</ul>');
+    </script>
+<form action="/checkout" method="GET"><input type="submit" value="Proceed to Checkout"></form>
 </body>
+<script>
+    function isNonNegInt (StringToCheck, returnErrors = false) {
+        errors = [];
+        var x = Number(StringToCheck);
+        if (isNaN(x) ){
+            errors.push(`Something other than a number was entered.`);
+        }
+        if (x < 0) {
+            errors.push('Please enter a non-negative number.');
+        }
+        if (x === 0) {
+            errors.push('Please enter a number greater than 0.');
+        }
+        if (parseInt(x) != x) {
+            errors.push('Please enter a whole number.');
+        }
+        return returnErrors ? errors : (errors.length == 0);
+    }
+
+    function ModifyItem() {
+        var buttonId = event.srcElement.id;
+        var keyData = {};
+        var x = document.getElementsByClassName('itemInCart');
+        for (i = 0; i <= x.length; i++) {
+            var checkId = document.getElementById(`modify${i}`).id;
+            var quantity = document.getElementById(`product${i}_quantity`).value;
+            if (buttonId == checkId && isNonNegInt(quantity, false)) {
+                var nameCheck = `cartProduct${i}`;
+                keyData.product = products_array[i]['name'];
+                keyData.price = products_array[i]['price'];
+                keyData.quantity = quantity;
+                var keyCheck = JSON.stringify(keyData);
+                break;
+            } else if (buttonId == checkId && isNonNegInt(quantity, true)) {
+                alert(errors);
+                break;
+            }
+        }
+        if (sessionStorage.getItem(nameCheck) != null) {
+            //update
+            sessionStorage.setItem(nameCheck, keyCheck);
+            quantity = sessionStorage.getItem(nameCheck);
+            location.reload();
+        }
+    }
+
+    function RemoveItem() {
+        var buttonId = event.srcElement.id;
+        var x = document.getElementsByClassName('itemInCart');
+        for (i = 0; i <= x.length; i++) {
+            var checkId = document.getElementById(`delete${i}`).id;
+            var nameCheck = `cartProduct${i}`;
+            if (buttonId == checkId) {
+                sessionStorage.removeItem(nameCheck);
+                location.reload();
+                break;
+            }
+        }
+    }
+
+    function ClearCart() {
+        if (sessionStorage.length > 0) {
+            sessionStorage.clear();
+            location.reload();
+        } else {
+            alert('Your cart is empty!');
+        }
+    }
+</script>
+
 </html>

@@ -7,5 +7,21 @@
 </head>
 <body>
     Invoice page
+    <script>
+        var extendedPrice = 0;
+        document.write('<table>');
+        document.write('<tr><th>Item Name</th><th>Price</th><th>Quantity</th><th>Extended Price</th></tr>');
+        for (i=0; i < sessionStorage.length; i++) {
+            var displayProduct = JSON.parse(sessionStorage.getItem(`cartProduct${i}`) );
+            extendedPrice = displayProduct['price'] * displayProduct['quantity'];
+            document.write(`<tr>
+                    <td>${displayProduct['product']}</td>
+                    <td>$${displayProduct['price'].toFixed(2)}</td>
+                    <td>${displayProduct['quantity']}</td>
+                    <td>$${extendedPrice.toFixed(2)}</td>
+                    </tr>`);
+        }
+        document.write('</table>');
+    </script>
 </body>
 </html>

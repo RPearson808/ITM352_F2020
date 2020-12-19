@@ -1,3 +1,28 @@
+<script>
+function getCookie(name = '') {
+    let cookies = document.cookie;
+    let cookiestore = {};
+    
+    cookies = cookies.split(";");
+    
+    if (cookies[0] == "" && cookies[0][0] == undefined) {
+        return undefined;
+    }
+    
+    cookies.forEach(function(cookie) {
+        cookie = cookie.split(/=(.+)/);
+        if (cookie[0].substr(0, 1) == ' ') {
+            cookie[0] = cookie[0].substr(1);
+        }
+        cookiestore[cookie[0]] = cookie[1];
+    });
+    
+    return (name !== '' ? cookiestore[name] : cookiestore);
+}
+var cookieToEdit = getCookie('email');
+var x = cookieToEdit.replace('email=', '');
+var emailToUse = x.replace('%40', '@');
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,10 +33,11 @@
 </head>
 <body>
     Checkout page
-<span id="test">
     <script>
-        document.getElementById('test').innerHTML = sessionStorage['test'];
+        document.write(emailToUse);
     </script>
-</span>
 </body>
+<script>
+
+</script>
 </html>

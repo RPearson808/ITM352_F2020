@@ -1,3 +1,8 @@
+/*
+-----Author: Russel Pearson
+-----Date: 11/1/2020
+-----Purpose: Provide index.html with the array of products to generate storefront
+*/
 // fun fact: all of these prices are only 10% of their actual value according to CardKingdom
 var products_array = [    
     {

@@ -1,4 +1,10 @@
-// fun fact: all of these prices are only 10% of their actual value according to CardKingdom
+/*
+-----Author: Russel Pearson
+-----Date: 12/17/2020
+-----Purpose: Provide pages within the secure folder access to the array of products here.  This was done because I kept encountering
+              an error with the MIME type when trying to access the exact same file within the public folder, the same one one being 
+              used in index.html.  This is pretty much copy-pasted from the public folder.
+*/
 var products_array = [    
     {
         name: "Black Lotus",

@@ -57,7 +57,9 @@ expressApp.post("/login", function (request, response) {
     loginAuth = username_from_form.toLowerCase();
     if (loginAuth == user_data[loginAuth]['authID'] && password_from_form == user_data[loginAuth]['password']) {
         displayName = user_data[loginAuth]['name'];
+        userEmail = user_data[loginAuth]['email'];
         response.cookie('login', displayName);
+        response.cookie('email', userEmail)
         response.redirect('/');
     } else {
         str = `${username_from_form} is not the same as ${user_data}[${username_from_form}]['username']`;
@@ -96,11 +98,8 @@ expressApp.post("/register", function (request, response) {
     }
 });
 
-expressApp.post("/cart", function (request, response) {
-    POST = request.body;
-    test = POST['test'];
+expressApp.get("/cart", function (request, response) {
     contents = fs.readFileSync('./secure/cart.html', 'utf-8');
-    contents += test;
     response.send(contents);
 });
 
