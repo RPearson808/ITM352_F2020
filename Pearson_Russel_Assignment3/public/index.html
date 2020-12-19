@@ -1,27 +1,27 @@
 <script>
-function getCookie(name = '') {
-    let cookies = document.cookie;
-    let cookiestore = {};
-    
-    cookies = cookies.split(";");
-    
-    if (cookies[0] == "" && cookies[0][0] == undefined) {
-        return undefined;
-    }
-    
-    cookies.forEach(function(cookie) {
-        cookie = cookie.split(/=(.+)/);
-        if (cookie[0].substr(0, 1) == ' ') {
-            cookie[0] = cookie[0].substr(1);
+    function getCookie(name = '') {
+        let cookies = document.cookie;
+        let cookiestore = {};
+
+        cookies = cookies.split(";");
+
+        if (cookies[0] == "" && cookies[0][0] == undefined) {
+            return undefined;
         }
-        cookiestore[cookie[0]] = cookie[1];
-    });
-    
-    return (name !== '' ? cookiestore[name] : cookiestore);
-}
-var cookieToEdit = getCookie('login');
-var x = cookieToEdit.replace('login=','');
-var display = x.replace('%20', ' ');
+
+        cookies.forEach(function (cookie) {
+            cookie = cookie.split(/=(.+)/);
+            if (cookie[0].substr(0, 1) == ' ') {
+                cookie[0] = cookie[0].substr(1);
+            }
+            cookiestore[cookie[0]] = cookie[1];
+        });
+
+        return (name !== '' ? cookiestore[name] : cookiestore);
+    }
+    var cookieToEdit = getCookie('login');
+    var x = cookieToEdit.replace('login=', '');
+    var display = x.replace('%20', ' ');
 
 </script>
 <!DOCTYPE html>
@@ -41,7 +41,7 @@ var display = x.replace('%20', ' ');
         <div class="navBar" id="navBar">
             <span id="name_display" class="name_display">
                 <script>
-                    if (document.cookie != '') {
+                    if (getCookie('login') != undefined) {
                         document.getElementById('name_display').innerHTML = display;
                     } else {
                         document.getElementById('name_display').innerHTML = "Hello, please sign in or register!";
@@ -50,7 +50,7 @@ var display = x.replace('%20', ' ');
             </span>
             <div id="login_register_logout" class="login_button">
                 <script>
-                    if (document.cookie != '') {
+                    if (getCookie('login') != undefined) {
                         document.getElementById('login_register_logout').innerHTML = `<form name="logout" action="/logout" method="GET"><input type="submit" value="Log Out"></form>`;
                     } else {
                         document.getElementById('login_register_logout').innerHTML = `<form name="login" action="/login" method="GET"><input type="submit" value="Log In"></form>
@@ -62,7 +62,7 @@ var display = x.replace('%20', ' ');
         <div id="cart_quantity">
             <script>
                 if (sessionStorage.length > 0) {
-                    
+
                 } else {
                     document.getElementById('cart_quantity').innerHTML = 0;
                 }
@@ -88,10 +88,10 @@ var display = x.replace('%20', ' ');
     <input type="submit" id="clearcart" value="Clear Your Cart" onclick="ClearCart();">
 </body>
 <script>
-    function isNonNegInt (StringToCheck, returnErrors = false) {
+    function isNonNegInt(StringToCheck, returnErrors = false) {
         errors = [];
         var x = Number(StringToCheck);
-        if (isNaN(x) ){
+        if (isNaN(x)) {
             errors.push(`Something other than a number was entered.`);
         }
         if (x < 0) {

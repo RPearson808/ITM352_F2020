@@ -1,18 +1,45 @@
+<script>
+    function getCookie(name = '') {
+    let cookies = document.cookie;
+    let cookiestore = {};
+    
+    cookies = cookies.split(";");
+    
+    if (cookies[0] == "" && cookies[0][0] == undefined) {
+        return undefined;
+    }
+    
+    cookies.forEach(function(cookie) {
+        cookie = cookie.split(/=(.+)/);
+        if (cookie[0].substr(0, 1) == ' ') {
+            cookie[0] = cookie[0].substr(1);
+        }
+        cookiestore[cookie[0]] = cookie[1];
+    });
+    
+    return (name !== '' ? cookiestore[name] : cookiestore);
+}
+    var x = getCookie('email');
+    var y = x.replace('email=', '');
+    var emailToSend = y.replace('%40', '@');
+</script>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
 </head>
+
 <body>
     Invoice page
     <script>
         var extendedPrice = 0;
         document.write('<table>');
         document.write('<tr><th>Item Name</th><th>Price</th><th>Quantity</th><th>Extended Price</th></tr>');
-        for (i=0; i < sessionStorage.length; i++) {
-            var displayProduct = JSON.parse(sessionStorage.getItem(`cartProduct${i}`) );
+        for (i = 0; i < sessionStorage.length; i++) {
+            var displayProduct = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
             extendedPrice = displayProduct['price'] * displayProduct['quantity'];
             document.write(`<tr>
                     <td>${displayProduct['product']}</td>
@@ -24,4 +51,5 @@
         document.write('</table>');
     </script>
 </body>
+
 </html>

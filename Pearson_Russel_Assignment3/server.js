@@ -10,10 +10,10 @@ var bodyParser = require("body-parser");
 var fs = require('fs');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var nodemailer = require('nodemailer');
 
 // initialize user database
 var userDatabase = './secure/userData.json';
-var sessionStorage = './secure/sessionStorage.js';
 
 // telling express what folder to serve
 expressApp.use(express.static('./public'));
@@ -58,8 +58,8 @@ expressApp.post("/login", function (request, response) {
     if (loginAuth == user_data[loginAuth]['authID'] && password_from_form == user_data[loginAuth]['password']) {
         displayName = user_data[loginAuth]['name'];
         userEmail = user_data[loginAuth]['email'];
-        response.cookie('login', displayName);
-        response.cookie('email', userEmail)
+        response.cookie('login', displayName).send;
+        response.cookie("email", userEmail).send;
         response.redirect('/');
     } else {
         str = `${username_from_form} is not the same as ${user_data}[${username_from_form}]['username']`;
@@ -86,7 +86,9 @@ expressApp.post("/register", function (request, response) {
             data = JSON.stringify(user_data);
             fs.writeFileSync(userDatabase, data, 'utf-8');
             displayName = user_data[newUser]['name'];
+            userEmail = user_data[newUser]['email'];
             response.cookie("login", displayName).send;
+            response.cookie("email", userEmail).send;
             response.redirect("/");
         } else {
             str = 'registration failed';
@@ -110,7 +112,33 @@ expressApp.get("/checkout", function (request, response) {
 
 expressApp.get("/invoice", function (request, response) {
     contents = fs.readFileSync('./secure/invoice.html', 'utf-8');
-    contents += "<span>hello</span>";
+    response.send(contents);
+});
+
+expressApp.post("/order_confirmation", function (request, response) {
+    var emailToSend = request.cookies.email;
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465, // Google's SSL port
+        auth: {
+            user: 'captainblue808@gmail.com',
+            pass: 'mcaocarcuqtaggsl'
+        }
+    });
+    const message = {
+        from: 'captainblue808@gmail.com', // Sender address
+        to: `${emailToSend}`,         // List of recipients
+        subject: "Your purchase receipt from Russel's Store", // Subject line
+        text: 'EMAIL' // Plain text body
+    };
+    transporter.sendMail(message, function (err, info) {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log(info);
+        }
+    });
+    contents = fs.readFileSync('./secure/confirm.html', 'utf-8');
     response.send(contents);
 });
 
@@ -126,6 +154,7 @@ expressApp.get("/session_check", function (request, response) {
 
 expressApp.get("/logout", function (request, response) {
     response.clearCookie('login');
+    response.clearCookie('email');
     request.session.destroy();
     response.redirect('/');
 })
