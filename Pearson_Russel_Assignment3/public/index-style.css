@@ -15,24 +15,11 @@ header {
 }
 .product_listing {
     padding-bottom: 100px;
+    width: 200px;
 }
 
-#product0 {
-    float: left
-}
-
-#product0, input {
+.product_listing, input {
     float: left;
-    margin: 0;
-    padding: 0;
-}
-
-#product1 {
-    margin: auto;
-}
-
-#product2 {
-    float: right;
 }
 
 /*Header alignment*/

@@ -58,6 +58,24 @@ var products_array = [
         name: "Time Walk",
         price: 839.99,
         img:"../images/a_time_walk.jpg"
+    },
+
+    {
+        name: "Copy Artifact",
+        price: 74.99,
+        img:"../images/a_copy_artifact.jpg"
+    },   
+
+    {
+        name: "Mind Twist",
+        price: 89.99,
+        img:"../images/a_mind_twist.jpg"
+    },
+        
+    {
+        name: "Volcanic Island",
+        price: 699.99,
+        img:"../images/a_volcanic_island.jpg"
     }
 ];
 

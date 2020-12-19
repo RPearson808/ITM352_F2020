@@ -38,58 +38,58 @@
 <body>
     <div>
         <header>
-        <h3>Shop</h3>
-        <ul>
-            <span id="name_display" class="name_display">
-                <script>
-                    if (getCookie('login') != undefined) {
-                        document.getElementById('name_display').innerHTML = display;
-                    } else {
-                        document.getElementById('name_display').innerHTML = "Hello, please sign in or register!";
-                    };
-                </script>
-            </span>
-            <span id="login_register_logout" class="login_register_logout">
-                <script>
-                    if (getCookie('login') != undefined) {
-                        document.getElementById('login_register_logout').innerHTML = `<form name="logout" action="/logout" method="GET"><input type="submit" value="Log Out"></form>`;
-                    } else {
-                        document.getElementById('login_register_logout').innerHTML = `<form name="login" action="/login" method="GET"><input type="submit" value="Log In"></form>
-                                                                                    <form name="register" action="/register" method="GET"><input type="submit" value="Register"></form>`;
-                    };
-                </script>
-            </span>
-            <span id="cart_quantity" class="cart_quantity">
-                <script>
-                    if (sessionStorage.length > 0) {
-                        var cartQuantity = 0;
-                        for (i = 0; i < sessionStorage.length; i++) {
-                            var x = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
-                            if (x != null) {
-                                var quantityToAdd = Number(x['quantity']);
-                                cartQuantity += quantityToAdd;
-                            } else {
-                                var quantityToAdd = 0;
-                                cartQuantity += quantityToAdd;
-                            }
-                        } if (cartQuantity === 1) {
-                            document.getElementById('cart_quantity').innerHTML = 'There is 1 item in your cart.';
+            <h3>Shop</h3>
+            <ul>
+                <span id="name_display" class="name_display">
+                    <script>
+                        if (getCookie('login') != undefined) {
+                            document.getElementById('name_display').innerHTML = display;
                         } else {
-                            document.getElementById('cart_quantity').innerHTML = `There are ${cartQuantity} items in your cart.`;
+                            document.getElementById('name_display').innerHTML = "Hello, please sign in or register!";
+                        };
+                    </script>
+                </span>
+                <span id="login_register_logout" class="login_register_logout">
+                    <script>
+                        if (getCookie('login') != undefined) {
+                            document.getElementById('login_register_logout').innerHTML = `<form name="logout" action="/logout" method="GET"><input type="submit" value="Log Out"></form>`;
+                        } else {
+                            document.getElementById('login_register_logout').innerHTML = `<form name="login" action="/login" method="GET"><input type="submit" value="Log In"></form>
+                                                                                    <form name="register" action="/register" method="GET"><input type="submit" value="Register"></form>`;
+                        };
+                    </script>
+                </span>
+                <span id="cart_quantity" class="cart_quantity">
+                    <script>
+                        if (sessionStorage.length > 0) {
+                            var cartQuantity = 0;
+                            for (i = 0; i < sessionStorage.length; i++) {
+                                var x = JSON.parse(sessionStorage.getItem(`cartProduct${i + 8}`));
+                                if (x != null) {
+                                    var quantityToAdd = Number(x['quantity']);
+                                    cartQuantity += quantityToAdd;
+                                } else {
+                                    var quantityToAdd = 0;
+                                    cartQuantity += quantityToAdd;
+                                }
+                            } if (cartQuantity === 1) {
+                                document.getElementById('cart_quantity').innerHTML = 'There is 1 item in your cart.';
+                            } else {
+                                document.getElementById('cart_quantity').innerHTML = `There are ${cartQuantity} items in your cart.`;
+                            }
+                        } else {
+                            document.getElementById('cart_quantity').innerHTML = "There are 0 items in your cart";
                         }
-                    } else {
-                        document.getElementById('cart_quantity').innerHTML = "There are 0 items in your cart";
-                    }
-                </script>
-                <form id="myCart" class="myCart" action="/cart" method="GET"><input type="submit" value="My Cart">
-                </form>
-                <input type="submit" id="clearcart" value="Clear    Cart" onclick="ClearCart();">
-            </span>
-        </ul>
+                    </script>
+                    <form id="myCart" class="myCart" action="/cart" method="GET"><input type="submit" value="My Cart">
+                    </form>
+                    <input type="submit" id="clearcart" value="Clear    Cart" onclick="ClearCart();">
+                </span>
+            </ul>
         </header>
         <script>
             for (i = 0; i < products_array.length; i++) {
-                if (i < 4) {
+                if (i > 7) {
                     document.write(`
                         <form name="Product${i}" id="product${i}" class="product_listing">
                         <span id="product${i}_name" name="product${i}_name">${products_array[i]['name']}</span> <br>
@@ -101,18 +101,16 @@
                         <input type="button" id="delete${i}" value="Remove From Cart" onclick="RemoveItem();"> </input>
                         </form>
                     `);
-                } else if (i > 4) {
-                    break;
                 }
             }
         </script>
-    <footer>
-        <input type="button" onclick="window.location.href='/page3.html' " value="Page 3">
-        <input type="button" onclick="window.location.href='/page2.html' " value="Page 2">
-    </footer>
+        <footer>
+            <input type="button" onclick="window.location.href='/page2.html' " value="Page 2">
+            <input type="button" onclick="window.location.href='/' " value="Page 1">
+        </footer>
 </body>
 <script>
-        // load all functions to be used here
+    // load all functions to be used here
     function isNonNegInt(StringToCheck, returnErrors = false) { // a re-done isNonNegInt
         errors = [];
         var x = Number(StringToCheck); // had to convert string to Number type for new version to work since it was not playing well w/ quantity values from webpage
@@ -130,24 +128,25 @@
         }
         return returnErrors ? errors : (errors.length == 0);
     }
+
     function SaveItem() { // for adding items to the cart
-        var buttonId = event.srcElement.id; // check event to find the id of the button causing the event
-        var keyData = {}; // for pushing product data into the cart
-        var x = document.getElementsByClassName('product_listing'); // grabs every element with class product_listing
+        var buttonId = event.srcElement.id;
+        var keyData = {};
+        var x = document.getElementsByClassName('product_listing');
         for (i = 0; i < x.length; i++) {
-            var checkId = document.getElementById(`add${i}`).id; // grab button id for checking
-            var quantity = document.getElementById(`product${i}_quantity`).value // grab value to check if quantity is a valid input
-            if (buttonId == checkId && isNonNegInt(quantity, false)) { // check button id against source element id and run quantity through isNonNegInt
-                var name = `cartProduct${i}`; // name for new item for sessionStorage
-                keyData.product = products_array[i]['name'];
-                keyData.price = products_array[i]['price'];
+            var checkId = document.getElementById(`add${i + 8}`).id; // due to new loop, we now skip 8 elements ahead
+            var quantity = document.getElementById(`product${i + 8}_quantity`).value
+            if (buttonId == checkId && isNonNegInt(quantity, false)) {
+                var name = `cartProduct${i + 8}`;
+                keyData.product = products_array[i + 8]['name'];
+                keyData.price = products_array[i + 8]['price'];
                 keyData.quantity = quantity;
-                keyData.img = products_array[i]['img'];
-                var key = JSON.stringify(keyData); // objects can't be passed into keys for sessionStorage, so we convert it to a string
-                sessionStorage.setItem(name, key); // product is now in cart
-                location.reload(); // force a window reload to reflect changes
+                keyData.img = products_array[i + 8]['img'];
+                var key = JSON.stringify(keyData);
+                sessionStorage.setItem(name, key);
+                location.reload();
                 break;
-            } else if (buttonId == checkId && isNonNegInt(quantity, true)) { // we check for buttonId and checkId again so we don't spam alerts to user
+            } else if (buttonId == checkId && isNonNegInt(quantity, true)) {
                 alert(errors);
                 break;
             }
@@ -159,14 +158,14 @@
         var keyData = {};
         var x = document.getElementsByClassName('product_listing');
         for (i = 0; i <= x.length; i++) {
-            var checkId = document.getElementById(`modify${i}`).id;
-            var quantity = document.getElementById(`product${i}_quantity`).value;
+            var checkId = document.getElementById(`modify${i + 8}`).id; // due to new loop, we now skip 8 elements ahead
+            var quantity = document.getElementById(`product${i + 8}_quantity`).value;
             if (buttonId == checkId && isNonNegInt(quantity, false)) {
-                var nameCheck = `cartProduct${i}`; // for validation later on
-                keyData.product = products_array[i]['name'];
-                keyData.price = products_array[i]['price'];
+                var nameCheck = `cartProduct${i + 8}`;
+                keyData.product = products_array[i + 8]['name'];
+                keyData.price = products_array[i + 8]['price'];
                 keyData.quantity = quantity;
-                keyData.img = products_array[i]['img'];
+                keyData.img = products_array[i + 8]['img'];
                 var keyCheck = JSON.stringify(keyData);
                 break;
             } else if (buttonId == checkId && isNonNegInt(quantity, true)) {
@@ -174,8 +173,8 @@
                 break;
             }
         }
-        if (sessionStorage.getItem(nameCheck) != null) { // we check to see if the item is already in our cart; if it is not, it will return null
-            // now we update quantity of the item
+        if (sessionStorage.getItem(nameCheck) != null) {
+            //update sessionStorage
             sessionStorage.setItem(nameCheck, keyCheck);
             quantity = sessionStorage.getItem(nameCheck);
             location.reload();
@@ -186,8 +185,8 @@
         var buttonId = event.srcElement.id;
         var x = document.getElementsByClassName('product_listing');
         for (i = 0; i <= x.length; i++) {
-            var checkId = document.getElementById(`delete${i}`).id;
-            var nameCheck = `cartProduct${i}`;
+            var checkId = document.getElementById(`delete${i + 8}`).id; // due to new loop, we now skip 8 elements ahead
+            var nameCheck = `cartProduct${i + 8}`;
             if (buttonId == checkId) {
                 sessionStorage.removeItem(nameCheck);
                 location.reload();

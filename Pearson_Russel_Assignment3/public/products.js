@@ -1,9 +1,8 @@
 /*
 -----Author: Russel Pearson
------Date: 11/1/2020
------Purpose: Provide index.html with the array of products to generate storefront
+-----Date: 12/17/2020
+-----Purpose: Provide pages within the public folder access to product data.
 */
-// fun fact: all of these prices are only 10% of their actual value according to CardKingdom
 var products_array = [    
     {
         name: "Black Lotus",
@@ -57,6 +56,24 @@ var products_array = [
         name: "Time Walk",
         price: 839.99,
         img:"../images/a_time_walk.jpg"
+    },
+
+    {
+        name: "Copy Artifact",
+        price: 74.99,
+        img:"../images/a_copy_artifact.jpg"
+    },   
+
+    {
+        name: "Mind Twist",
+        price: 89.99,
+        img:"../images/a_mind_twist.jpg"
+    },
+        
+    {
+        name: "Volcanic Island",
+        price: 699.99,
+        img:"../images/a_volcanic_island.jpg"
     }
 ];
 
