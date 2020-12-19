@@ -17,7 +17,6 @@
         for (i = 0; i < sessionStorage.length; i++) {
             var displayProduct = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
             if (displayProduct != null) {
-                extendedPrice = displayProduct['price'] * displayProduct['quantity'];
                 document.write(`
                         <li><img src=${displayProduct['img']}></li>
                         <li>${displayProduct['product']}</li>
