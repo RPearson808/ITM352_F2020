@@ -2,7 +2,7 @@
 body {
     width: 800px; 
     margin: 0 auto;
-    background-color: burlywood;
+    background-color: rgb(69, 158, 199);
 }
 /*Centering the image*/
 img {
@@ -11,7 +11,7 @@ img {
 }
 
 header {
-    padding-bottom: 100px;
+    background-color: aliceblue;
 }
 .product_listing {
     padding-bottom: 100px;

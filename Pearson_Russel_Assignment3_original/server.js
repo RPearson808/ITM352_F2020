@@ -13,7 +13,7 @@ var session = require('express-session');
 var nodemailer = require('nodemailer');
 
 // initialize user database
-var userDatabase = './secure/userData.json';
+var userDatabase = 'userData.json';
 
 // initalize products
 var product_data = require('./public/products.js');
@@ -30,7 +30,7 @@ if (fs.existsSync(userDatabase)) {
     console.log(user_data);
 } else {
     console.log("ERROR: Unable to read file " + userDatabase);
-    exit();
+    //exit();
 }
 
 // allowing express to use sessions and cookies
@@ -49,7 +49,7 @@ expressApp.get('/', function (request, response) {
 });
 
 expressApp.get("/login", function (request, response) {
-    contents = fs.readFileSync('./secure/login.html', 'utf-8');
+    contents = fs.readFileSync('./public/login.html', 'utf-8');
     response.send(contents);
 });
 
@@ -72,7 +72,7 @@ expressApp.post("/login", function (request, response) {
 });
 
 expressApp.get("/register", function (request, response) {
-    contents = fs.readFileSync('./secure/register.html', 'utf-8');
+    contents = fs.readFileSync('./public/register.html', 'utf-8');
     response.send(contents);
 });
 
@@ -105,12 +105,12 @@ expressApp.post("/register", function (request, response) {
 });
 
 expressApp.get("/cart", function (request, response) {
-    contents = fs.readFileSync('./secure/cart.html', 'utf-8');
+    contents = fs.readFileSync('./public/cart.html', 'utf-8');
     response.send(contents);
 });
 
 expressApp.get("/checkout", function (request, response) {
-    contents = fs.readFileSync('./secure/checkout.html', 'utf-8');
+    contents = fs.readFileSync('./public/checkout.html', 'utf-8');
     response.send(contents);
 });
 
@@ -132,7 +132,7 @@ expressApp.post("/invoice", function (request, response) {
     response.cookie('stateCode', stateCode);
     postalCode = POST['postal_code'];
     response.cookie('postalCode', postalCode);
-    contents = fs.readFileSync('./secure/invoice.html', 'utf-8');
+    contents = fs.readFileSync('./public/invoice.html', 'utf-8');
     contents += `Shipping To: <br>
                 ${firstName} ${lastName} <br>
                 ${address1} ${address2} <br>
@@ -188,7 +188,7 @@ Mahalo again for shopping with us ${customerName}!` // Plain text body
             console.log(info);
         }
     });
-    contents = fs.readFileSync('./secure/confirm.html', 'utf-8');
+    contents = fs.readFileSync('./public/confirm.html', 'utf-8');
     response.send(contents);
     response.clearCookie('firstName');
     response.clearCookie('lastName');

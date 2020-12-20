@@ -1,0 +1,15 @@
+/*Webpage margins*/
+body {
+    width: 800px; 
+    margin: 0 auto;
+    background-color: rgb(69, 158, 199);
+}
+/*Centering the image*/
+img {
+    width: 193px;
+    height: 269px;
+}
+
+header {
+    background-color: aliceblue;
+}

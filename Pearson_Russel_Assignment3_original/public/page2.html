@@ -1,4 +1,5 @@
 <script>
+    // this function is not mine but I don't remember where I got from unfortunately
     function getCookie(name = '') {
         let cookies = document.cookie;
         let cookiestore = {};
@@ -19,10 +20,10 @@
 
         return (name !== '' ? cookiestore[name] : cookiestore);
     }
+    // getting relevant info from cookie
     var cookieToEdit = getCookie('login');
     var x = cookieToEdit.replace('login=', '');
     var display = x.replace('%20', ' ');
-
 </script>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,10 +62,10 @@
                 </span>
                 <span id="cart_quantity" class="cart_quantity">
                     <script>
+                        var cartQuantity = 0;
                         if (sessionStorage.length > 0) {
-                            var cartQuantity = 0;
                             for (i = 0; i < sessionStorage.length; i++) {
-                                var x = JSON.parse(sessionStorage.getItem(`cartProduct${i + 4}`));
+                                var x = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
                                 if (x != null) {
                                     var quantityToAdd = Number(x['quantity']);
                                     cartQuantity += quantityToAdd;
@@ -130,25 +131,24 @@
         }
         return returnErrors ? errors : (errors.length == 0);
     }
-
     function SaveItem() { // for adding items to the cart
-        var buttonId = event.srcElement.id;
-        var keyData = {};
-        var x = document.getElementsByClassName('product_listing');
+        var buttonId = event.srcElement.id; // check event to find the id of the button causing the event
+        var keyData = {}; // for pushing product data into the cart
+        var x = document.getElementsByClassName('product_listing'); // grabs every element with class product_listing
         for (i = 0; i < x.length; i++) {
-            var checkId = document.getElementById(`add${i + 4}`).id; // due to new loop, now we check 4 elements ahead
-            var quantity = document.getElementById(`product${i + 4}_quantity`).value
-            if (buttonId == checkId && isNonNegInt(quantity, false)) {
-                var name = `cartProduct${i + 4}`;
+            var checkId = document.getElementById(`add${i + 4}`).id; // grab button id for checking
+            var quantity = document.getElementById(`product${i + 4}_quantity`).value // grab value to check if quantity is a valid input
+            if (buttonId == checkId && isNonNegInt(quantity, false)) { // check button id against source element id and run quantity through isNonNegInt
+                var name = `cartProduct${i}`; // name for new item for sessionStorage
                 keyData.product = products_array[i + 4]['name'];
                 keyData.price = products_array[i + 4]['price'];
                 keyData.quantity = quantity;
-                keyData.img = products_array[i + 4]['img'];
-                var key = JSON.stringify(keyData);
-                sessionStorage.setItem(name, key);
-                location.reload();
+                keyData.img = products_array[i +]['img'];
+                var key = JSON.stringify(keyData); // objects can't be passed into keys for sessionStorage, so we convert it to a string
+                sessionStorage.setItem(name, key); // product is now in cart
+                location.reload(); // force a window reload to reflect changes
                 break;
-            } else if (buttonId == checkId && isNonNegInt(quantity, true)) {
+            } else if (buttonId == checkId && isNonNegInt(quantity, true)) { // we check for buttonId and checkId again so we don't spam alerts to user
                 alert(errors);
                 break;
             }
@@ -160,14 +160,14 @@
         var keyData = {};
         var x = document.getElementsByClassName('product_listing');
         for (i = 0; i <= x.length; i++) {
-            var checkId = document.getElementById(`modify${i + 4}`).id; // due to new loop, now we check 4 elements ahead
-            var quantity = document.getElementById(`product${i + 4}_quantity`).value;
+            var checkId = document.getElementById(`modify${i}`).id;
+            var quantity = document.getElementById(`product${i}_quantity`).value;
             if (buttonId == checkId && isNonNegInt(quantity, false)) {
-                var nameCheck = `cartProduct${i + 4}`;
-                keyData.product = products_array[i + 4]['name'];
-                keyData.price = products_array[i + 4]['price'];
+                var nameCheck = `cartProduct${i}`; // for validation later on
+                keyData.product = products_array[i]['name'];
+                keyData.price = products_array[i]['price'];
                 keyData.quantity = quantity;
-                keyData.img = products_array[i + 4]['img'];
+                keyData.img = products_array[i]['img'];
                 var keyCheck = JSON.stringify(keyData);
                 break;
             } else if (buttonId == checkId && isNonNegInt(quantity, true)) {
@@ -175,8 +175,8 @@
                 break;
             }
         }
-        if (sessionStorage.getItem(nameCheck) != null) {
-            //update
+        if (sessionStorage.getItem(nameCheck) != null) { // we check to see if the item is already in our cart; if it is not, it will return null
+            // now we update quantity of the item
             sessionStorage.setItem(nameCheck, keyCheck);
             quantity = sessionStorage.getItem(nameCheck);
             location.reload();
@@ -187,8 +187,8 @@
         var buttonId = event.srcElement.id;
         var x = document.getElementsByClassName('product_listing');
         for (i = 0; i <= x.length; i++) {
-            var checkId = document.getElementById(`delete${i + 4}`).id; // due to new loop, now we check 4 elements ahead
-            var nameCheck = `cartProduct${i + 4}`;
+            var checkId = document.getElementById(`delete${i}`).id;
+            var nameCheck = `cartProduct${i}`;
             if (buttonId == checkId) {
                 sessionStorage.removeItem(nameCheck);
                 location.reload();

@@ -29,11 +29,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index-style.css">
+    <link rel="stylesheet" href="generic-style.css">
     <title>Invoice</title>
 </head>
 
 <body>
+    <header>
+        <h3>Shop</h3>
+        <ul>
+            <span id="name_display" class="name_display">
+                <script>
+                    if (getCookie('login') != undefined) {
+                        document.getElementById('name_display').innerHTML = display;
+                    } else {
+                        document.getElementById('name_display').innerHTML = "Hello, please sign in or register!";
+                    };
+                </script>
+            </span>
+            <span id="login_register_logout" class="login_register_logout">
+                <script>
+                    if (getCookie('login') != undefined) {
+                        document.getElementById('login_register_logout').innerHTML = `<form name="logout" action="/logout" method="GET"><input type="submit" value="Log Out"></form>`;
+                    } else {
+                        document.getElementById('login_register_logout').innerHTML = `<form name="login" action="/login" method="GET"><input type="submit" value="Log In"></form>
+                                                                                    <form name="register" action="/register" method="GET"><input type="submit" value="Register"></form>`;
+                    };
+                </script>
+            </span>
+            <span id="cart_quantity" class="cart_quantity">
+                <script>
+                    var cartQuantity = 0;
+                    if (sessionStorage.length > 0) {
+                        for (i = 0; i < sessionStorage.length; i++) {
+                            var x = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
+                            if (x != null) {
+                                var quantityToAdd = Number(x['quantity']);
+                                cartQuantity += quantityToAdd;
+                            } else {
+                                var quantityToAdd = 0;
+                                cartQuantity += quantityToAdd;
+                            }
+                        } if (cartQuantity === 1) {
+                            document.getElementById('cart_quantity').innerHTML = 'There is 1 item in your cart.';
+                        } else {
+                            document.getElementById('cart_quantity').innerHTML = `There are ${cartQuantity} items in your cart.`;
+                        }
+                    } else {
+                        document.getElementById('cart_quantity').innerHTML = "There are 0 items in your cart";
+                    }
+                </script>
+                <form id="myCart" class="myCart" action="/cart" method="GET"><input type="submit" value="My Cart">
+                </form>
+                <input type="submit" id="clearcart" value="Clear    Cart" onclick="ClearCart();">
+            </span>
+        </ul>
+    </header>
     <form action="/order_confirmation" method="GET">
         <div>
             <script>
