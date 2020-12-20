@@ -1,0 +1,66 @@
+/*Webpage margins*/
+body {
+    width: 800px; 
+    margin: 0 auto;
+    background-color: rgb(69, 158, 199);
+}
+/*Centering the image*/
+img {
+    width: 193px;
+    height: 269px;
+}
+
+header {
+    background-color: aliceblue;
+    padding-bottom: 100px;
+}
+.product_listing {
+    padding-bottom: 100px;
+    width: 200px;
+}
+
+.product_listing, input {
+    float: left;
+}
+
+/*Header alignment*/
+h1, h2, h3{
+    text-align: center;
+}
+/*h1 customizations*/
+h1 {
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    color: white;
+    font-size: 40pt;
+}
+/*h2 customizations*/
+h2 {
+    color: white;
+    font-size: 12pt;
+}
+
+.name_display {
+    display: inline;
+    float: left;
+}
+.name_display, input {
+    display: inline;
+    float: left;
+    margin: 0;
+}
+
+.login_register_logout {
+    display: inline;
+    float: left;
+    margin: 0;
+}
+
+.cart_quantity {
+    display: inline;
+    float: right;
+}
+.cart_quantity, input {
+    display: inline;
+    float: right;
+    margin: 0;
+}

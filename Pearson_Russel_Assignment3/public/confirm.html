@@ -1,3 +1,28 @@
+<script>
+    function getCookie(name = '') {
+        let cookies = document.cookie;
+        let cookiestore = {};
+
+        cookies = cookies.split(";");
+
+        if (cookies[0] == "" && cookies[0][0] == undefined) {
+            return undefined;
+        }
+
+        cookies.forEach(function (cookie) {
+            cookie = cookie.split(/=(.+)/);
+            if (cookie[0].substr(0, 1) == ' ') {
+                cookie[0] = cookie[0].substr(1);
+            }
+            cookiestore[cookie[0]] = cookie[1];
+        });
+
+        return (name !== '' ? cookiestore[name] : cookiestore);
+    }
+    var x = getCookie('email');
+    var y = x.replace('email=', '');
+    var displayEmail = y.replace('%40', '@');
+</script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,17 +30,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="generic-style.css">
-    <title>Register</title>
+    <title>Thank you for your purchase!</title>
 </head>
 
 <body>
     <header>
-        <h3>Shop</h3>
+        <h3>Order Confirmation</h3>
         <ul>
             <span id="name_display" class="name_display">
                 <script>
+                    // script to show username
                     if (getCookie('login') != undefined) {
-                        document.getElementById('name_display').innerHTML = display;
+                        document.getElementById('name_display').innerHTML = `Welcome ${display}`;
                     } else {
                         document.getElementById('name_display').innerHTML = "Hello, please sign in or register!";
                     };
@@ -23,6 +49,7 @@
             </span>
             <span id="login_register_logout" class="login_register_logout">
                 <script>
+                    // script to check for login cookie and give either login/register buttons or give a logout button
                     if (getCookie('login') != undefined) {
                         document.getElementById('login_register_logout').innerHTML = `<form name="logout" action="/logout" method="GET"><input type="submit" value="Log Out"></form>`;
                     } else {
@@ -33,9 +60,10 @@
             </span>
             <span id="cart_quantity" class="cart_quantity">
                 <script>
-                    var cartQuantity = 0;
+                    // script to dynamically generate cart quantity
                     if (sessionStorage.length > 0) {
-                        for (i = 0; i < sessionStorage.length; i++) {
+                        var cartQuantity = 0;
+                        for (i = 0; i < products_array.length; i++) {
                             var x = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
                             if (x != null) {
                                 var quantityToAdd = Number(x['quantity']);
@@ -55,18 +83,16 @@
                 </script>
                 <form id="myCart" class="myCart" action="/cart" method="GET"><input type="submit" value="My Cart">
                 </form>
-                <input type="submit" id="clearcart" value="Clear    Cart" onclick="ClearCart();">
+                <input type="submit" id="clearcart" value="Clear Cart" onclick="ClearCart();">
             </span>
         </ul>
+        <div class="homebutton">
+            <input type=button onclick="window.location.href='/'" value="Back to Shop">
+        </div>
     </header>
-    <form action="/register" method="POST">
-        <input type="text" name="username" pattern="[A-Za-z0-9].{4,10}" size="40" placeholder="enter a username" title="Can only contain alphanumeric characters and must be between 4 - 10 characters"><br>
-        <input type="password" name="password" pattern=".{6,}" size="40" placeholder="enter a password" title="Must be at least 6 characters"><br>
-        <input type="password" name="repeat_password" size="40" placeholder="enter your password again"><br>
-        <input type="text" name="name" pattern="[A-Z a-z.,_].{1,}" size="40" placeholder="enter your name" title="Only alphabetic characters and . , are allowed"><br>
-        <input type="email" name="email" size="40" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="enter email" title="Must be a valid e-mail address"><br>
-        <input type="submit" value="Submit" id="submit">
-    </form>
+    <script>
+        document.write(`Thank you for your purchase!  We will be sending an e-mail to ${displayEmail}.`);
+    </script>
 </body>
 
 </html>

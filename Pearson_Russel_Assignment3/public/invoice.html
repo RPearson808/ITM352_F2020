@@ -35,12 +35,13 @@
 
 <body>
     <header>
-        <h3>Shop</h3>
+        <h3>Invoice</h3>
         <ul>
             <span id="name_display" class="name_display">
                 <script>
+                    // script to show username
                     if (getCookie('login') != undefined) {
-                        document.getElementById('name_display').innerHTML = display;
+                        document.getElementById('name_display').innerHTML = `Welcome ${display}`;
                     } else {
                         document.getElementById('name_display').innerHTML = "Hello, please sign in or register!";
                     };
@@ -48,6 +49,7 @@
             </span>
             <span id="login_register_logout" class="login_register_logout">
                 <script>
+                    // script to check for login cookie and give either login/register buttons or give a logout button
                     if (getCookie('login') != undefined) {
                         document.getElementById('login_register_logout').innerHTML = `<form name="logout" action="/logout" method="GET"><input type="submit" value="Log Out"></form>`;
                     } else {
@@ -58,9 +60,10 @@
             </span>
             <span id="cart_quantity" class="cart_quantity">
                 <script>
-                    var cartQuantity = 0;
+                    // script to dynamically generate cart quantity
                     if (sessionStorage.length > 0) {
-                        for (i = 0; i < sessionStorage.length; i++) {
+                        var cartQuantity = 0;
+                        for (i = 0; i < products_array.length; i++) {
                             var x = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
                             if (x != null) {
                                 var quantityToAdd = Number(x['quantity']);
@@ -80,9 +83,12 @@
                 </script>
                 <form id="myCart" class="myCart" action="/cart" method="GET"><input type="submit" value="My Cart">
                 </form>
-                <input type="submit" id="clearcart" value="Clear    Cart" onclick="ClearCart();">
+                <input type="submit" id="clearcart" value="Clear Cart" onclick="ClearCart();">
             </span>
         </ul>
+        <div class="homebutton">
+            <input type=button onclick="window.location.href='/'" value="Back to Shop">
+            </div>
     </header>
     <form action="/order_confirmation" method="GET">
         <div>

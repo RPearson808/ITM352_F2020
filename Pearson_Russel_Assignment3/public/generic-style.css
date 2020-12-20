@@ -12,10 +12,11 @@ img {
 
 header {
     background-color: aliceblue;
-}
-.product_listing {
     padding-bottom: 100px;
-    width: 200px;
+}
+
+.product_listing {
+    background-color: black;
 }
 
 .product_listing, input {
@@ -23,7 +24,7 @@ header {
 }
 
 /*Header alignment*/
-h1, h2 {
+h1, h2, h3{
     text-align: center;
 }
 /*h1 customizations*/

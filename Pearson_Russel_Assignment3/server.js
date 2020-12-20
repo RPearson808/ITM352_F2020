@@ -110,38 +110,49 @@ expressApp.get("/cart", function (request, response) {
 });
 
 expressApp.get("/checkout", function (request, response) {
-    contents = fs.readFileSync('./public/checkout.html', 'utf-8');
-    response.send(contents);
+    if (request.cookies.login != undefined) {
+        contents = fs.readFileSync('./public/checkout.html', 'utf-8');
+        response.send(contents);
+    } else {
+        str = 'Please go back to the home page and log in or create an account!';
+        response.send(str);
+    }
 });
 
 expressApp.post("/invoice", function (request, response) {
-    POST = request.body;
-    creditCard = POST['credit_card'];
-    response.cookie('creditCard', creditCard);
-    firstName = POST['first_name'];
-    response.cookie('firstName', firstName);
-    lastName = POST['last_name'];
-    response.cookie('lastName', lastName);
-    address1 = POST['address1'];
-    response.cookie('address1', address1);
-    address2 = POST['address2'];
-    response.cookie('address2', address2);
-    city = POST['city'];
-    response.cookie('city', city);
-    stateCode = POST['state'];
-    response.cookie('stateCode', stateCode);
-    postalCode = POST['postal_code'];
-    response.cookie('postalCode', postalCode);
-    contents = fs.readFileSync('./public/invoice.html', 'utf-8');
-    contents += `Shipping To: <br>
+    if (request.cookies.login != undefined) {
+        POST = request.body;
+        creditCard = POST['credit_card'];
+        response.cookie('creditCard', creditCard);
+        firstName = POST['first_name'];
+        response.cookie('firstName', firstName);
+        lastName = POST['last_name'];
+        response.cookie('lastName', lastName);
+        address1 = POST['address1'];
+        response.cookie('address1', address1);
+        address2 = POST['address2'];
+        response.cookie('address2', address2);
+        city = POST['city'];
+        response.cookie('city', city);
+        stateCode = POST['state'];
+        response.cookie('stateCode', stateCode);
+        postalCode = POST['postal_code'];
+        response.cookie('postalCode', postalCode);
+        contents = fs.readFileSync('./public/invoice.html', 'utf-8');
+        contents += `Shipping To: <br>
                 ${firstName} ${lastName} <br>
                 ${address1} ${address2} <br>
                 ${city}, ${stateCode} ${postalCode}
                 `;
-    response.send(contents);
+        response.send(contents);
+    } else {
+        str = 'Please go back to the home page and log in or create an account!';
+        response.send(str);
+    }
 });
 
 expressApp.get("/order_confirmation", function (request, response) {
+    if (request.cookies.login != undefined) {
     emailToSend = request.cookies.email;
     fname = request.cookies.firstName;
     lname = request.cookies.lastName;
@@ -198,6 +209,11 @@ Mahalo again for shopping with us ${customerName}!` // Plain text body
     response.clearCookie('stateCode');
     response.clearCookie('postalCode');
     response.clearCookie('creditCard');
+    sessionStorage.clear();
+} else {
+    str = 'Please go back to the home page and log in or create an account!';
+    response.send(str);
+}
 });
 
 expressApp.get("/logout", function (request, response) {

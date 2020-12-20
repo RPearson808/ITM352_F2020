@@ -1,3 +1,30 @@
+<script>
+    // this function is not mine but I don't remember where I got from unfortunately
+    function getCookie(name = '') {
+        let cookies = document.cookie;
+        let cookiestore = {};
+
+        cookies = cookies.split(";");
+
+        if (cookies[0] == "" && cookies[0][0] == undefined) {
+            return undefined;
+        }
+
+        cookies.forEach(function (cookie) {
+            cookie = cookie.split(/=(.+)/);
+            if (cookie[0].substr(0, 1) == ' ') {
+                cookie[0] = cookie[0].substr(1);
+            }
+            cookiestore[cookie[0]] = cookie[1];
+        });
+
+        return (name !== '' ? cookiestore[name] : cookiestore);
+    }
+    // getting relevant info from cookie
+    var cookieToEdit = getCookie('login');
+    var x = cookieToEdit.replace('login=', '');
+    var display = x.replace('%20', ' ');
+</script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,18 +32,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="products.js"></script>
-        <link rel="stylesheet" href="generic-style.css">
+    <link rel="stylesheet" href="generic-style.css">
     <title>My Cart</title>
 </head>
 
 <body>
     <header>
-        <h3>Shop</h3>
+        <h3>My Cart</h3>
         <ul>
             <span id="name_display" class="name_display">
                 <script>
+                    // script to show username
                     if (getCookie('login') != undefined) {
-                        document.getElementById('name_display').innerHTML = display;
+                        document.getElementById('name_display').innerHTML = `Welcome ${display}`;
                     } else {
                         document.getElementById('name_display').innerHTML = "Hello, please sign in or register!";
                     };
@@ -24,6 +52,7 @@
             </span>
             <span id="login_register_logout" class="login_register_logout">
                 <script>
+                    // script to check for login cookie and give either login/register buttons or give a logout button
                     if (getCookie('login') != undefined) {
                         document.getElementById('login_register_logout').innerHTML = `<form name="logout" action="/logout" method="GET"><input type="submit" value="Log Out"></form>`;
                     } else {
@@ -34,9 +63,10 @@
             </span>
             <span id="cart_quantity" class="cart_quantity">
                 <script>
-                    var cartQuantity = 0;
+                    // script to dynamically generate cart quantity
                     if (sessionStorage.length > 0) {
-                        for (i = 0; i < sessionStorage.length; i++) {
+                        var cartQuantity = 0;
+                        for (i = 0; i < products_array.length; i++) {
                             var x = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
                             if (x != null) {
                                 var quantityToAdd = Number(x['quantity']);
@@ -56,38 +86,42 @@
                 </script>
                 <form id="myCart" class="myCart" action="/cart" method="GET"><input type="submit" value="My Cart">
                 </form>
-                <input type="submit" id="clearcart" value="Clear    Cart" onclick="ClearCart();">
+                <input type="submit" id="clearcart" value="Clear Cart" onclick="ClearCart();">
             </span>
+            <div class="homebutton">
+                <input type=button onclick="window.location.href='/'" value="Back to Shop">
+            </div>
         </ul>
     </header>
+    <form action="/checkout" method="GET"><input type="submit" value="Proceed to Checkout"></form>
     <script>
         var extendedPrice = 0;
         document.write('<ul style="list-style-type:none;" class="itemInCart">');
         //document.write('<tr><th>Item Name</th><th>Price</th><th>Quantity</th><th>Extended Price</th></tr>');
-        for (i = 0; i < sessionStorage.length; i++) {
+        for (i = 0; i < products_array.length; i++) {
             var displayProduct = JSON.parse(sessionStorage.getItem(`cartProduct${i}`));
             if (displayProduct != null) {
                 document.write(`
+                    <div class="itemInCart">
                         <li><img src=${displayProduct['img']}></li>
                         <li>${displayProduct['product']}</li>
                         <li>$${displayProduct['price'].toFixed(2)}</li>
                         <li>${displayProduct['quantity']}</li>
-                        <li>$${extendedPrice.toFixed(2)}</li>
                         <label>Quantity: </label><input type="text" id="product${i}_quantity" size="3"></input> <br>
                         <input type="button" id="modify${i}" value="Modify Quantity" onclick="ModifyItem();"> </input>
                         <input type="button" id="delete${i}" value="Remove From Cart" onclick="RemoveItem();"> </input>
+                    </div>
                     `);
             }
         }
         document.write('</ul>');
     </script>
-<form action="/checkout" method="GET"><input type="submit" value="Proceed to Checkout"></form>
 </body>
 <script>
-    function isNonNegInt (StringToCheck, returnErrors = false) {
+    function isNonNegInt(StringToCheck, returnErrors = false) {
         errors = [];
         var x = Number(StringToCheck);
-        if (isNaN(x) ){
+        if (isNaN(x)) {
             errors.push(`Something other than a number was entered.`);
         }
         if (x < 0) {
@@ -102,47 +136,42 @@
         return returnErrors ? errors : (errors.length == 0);
     }
 
-    function ModifyItem() {
+    function ModifyItem() { // for modifying quantity amounts
         var buttonId = event.srcElement.id;
         var keyData = {};
-        var x = document.getElementsByClassName('itemInCart');
-        for (i = 0; i <= x.length; i++) {
-            var checkId = document.getElementById(`modify${i}`).id;
+        var checkId = document.getElementById(buttonId).id;
+        if (buttonId == checkId) {
+            var i = buttonId.substr(-1);
             var quantity = document.getElementById(`product${i}_quantity`).value;
-            if (buttonId == checkId && isNonNegInt(quantity, false)) {
-                var nameCheck = `cartProduct${i}`;
+            if (isNonNegInt(quantity, false)) {
+                var nameCheck = `cartProduct${i}`; // for validation of item
                 keyData.product = products_array[i]['name'];
                 keyData.price = products_array[i]['price'];
                 keyData.quantity = quantity;
                 keyData.img = products_array[i]['img'];
                 var keyCheck = JSON.stringify(keyData);
-                break;
-            } else if (buttonId == checkId && isNonNegInt(quantity, true)) {
+            } else if (isNonNegInt(quantity, true)) {
                 alert(errors);
-                break;
             }
         }
-        if (sessionStorage.getItem(nameCheck) != null) {
-            //update
+        if (sessionStorage.getItem(nameCheck) != null) { // we check to see if the item is already in our cart; if it is not, it will return null
+            // now we update quantity of the item
             sessionStorage.setItem(nameCheck, keyCheck);
             quantity = sessionStorage.getItem(nameCheck);
             location.reload();
-        }
+        } 
     }
 
-    function RemoveItem() {
+    function RemoveItem() { // remove an item entirely from the cart
         var buttonId = event.srcElement.id;
-        var x = document.getElementsByClassName('itemInCart');
-        for (i = 0; i <= x.length; i++) {
-            var checkId = document.getElementById(`delete${i}`).id;
+        var checkId = document.getElementById(buttonId).id;
+        if (buttonId == checkId) {
+            var i = buttonId.substr(-1);
             var nameCheck = `cartProduct${i}`;
-            if (buttonId == checkId) {
-                sessionStorage.removeItem(nameCheck);
-                location.reload();
-                break;
+            sessionStorage.removeItem(nameCheck);
+            location.reload();
             }
         }
-    }
 
     function ClearCart() {
         if (sessionStorage.length > 0) {
